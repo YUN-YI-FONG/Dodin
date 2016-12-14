@@ -1,0 +1,210 @@
+--Register
+
+local widget= require("widget")
+local composer = require( "composer" )
+local scene = composer.newScene()
+local Gender = "male"
+local json = require ( "json" )
+local session = "TW"
+function scene:create( event )
+	local sceneGroup = self.view
+	local function fieldHandler( textField )
+		return function( event )
+			if ( "began" == event.phase ) then
+				
+			elseif ( "ended" == event.phase ) then
+				
+				
+			elseif ( "editing" == event.phase ) then
+			
+			elseif ( "submitted" == event.phase ) then
+				
+				native.setKeyboardFocus( nil )
+			end
+		end
+	end
+
+
+
+	local email = native.newTextField( display.contentWidth/2.5, 80, 110, 16 )
+	email:addEventListener( "userInput", fieldHandler( function() return email end ) )
+	  
+
+	local password = native.newTextField( display.contentWidth/2.4, 127, 110, 16 )
+	password.isSecure = true
+	password:addEventListener( "userInput", fieldHandler( function() return password end ) )
+
+	local username = native.newTextField( display.contentWidth/2.4, 105, 110, 16 ) 
+	username:addEventListener( "userInput", fieldHandler( function() return username end ) )
+
+	local age = native.newTextField( display.contentWidth/2.5, 150 , 110, 16 )
+	age.inputType = "number"
+	age:addEventListener( "userInput", fieldHandler( function() return age end ) )
+
+	local Firstname = native.newTextField( display.contentWidth/1.8, 210, 85, 16 )
+	Firstname:addEventListener( "userInput", fieldHandler( function() return Firstname end ) )
+
+	local Lastname = native.newTextField( display.contentWidth/1.8, 240, 85, 16)
+	Lastname:addEventListener( "userInput", fieldHandler( function() return Lastname end ) )
+
+    sceneGroup:insert(Lastname)
+    sceneGroup:insert(Firstname)
+	sceneGroup:insert(age)
+	sceneGroup:insert(username)
+	sceneGroup:insert(password)
+	sceneGroup:insert(email)
+
+
+	local function registerbut( self, event )
+		
+		local function networkListener( event )
+			if ( event.isError ) then
+		        print( "Network error: ", event.response )
+		    else
+
+		        print ( "RESPONSE1: " .. event.response )
+
+		        idtable = event.response
+			    decodedData=json.decode(idtable)    
+			            
+			            
+				if(idtable  == "correct")then
+				--把country加到資料庫
+					local function networkListener2( event )
+						if ( event.isError ) then
+					        print( "Network error: ", event.response )
+					    else
+					    	print ( "RESPONSE2: " .. event.response )
+					    	composer.gotoScene("Home")		
+					    end
+					end
+					
+					local headers = {}
+
+					headers["Content-Type"] = "application/x-www-form-urlencoded"
+					headers["Accept-Language"] = "en-US"
+							
+					local body2 = "email="..email.text.."&country="..session.."&firstname="..Firstname.text.."&lastname="..Lastname.text.."&gender="..Gender
+							
+					local params = {}
+					params.headers = headers
+					params.body = body2
+
+					network.request( "http://140.131.12.56/Register2.php", "POST", networkListener2, params )
+
+	--------------------------------------------------------------------------------------------
+							
+				else
+					--error
+					--把錯誤的值插入到errormessage
+					local errormessage = {}
+					local j = 1
+					for i=1,5 do
+						if(decodedData[i] == nil) then
+								
+						else
+							table.insert(errormessage,j,decodedData[i])
+							j= j+1
+						end
+					end
+							
+					local function onComplete( event )
+						if ( event.action == "clicked" ) then
+							local i = event.index
+							if ( i == 1 ) then
+							  	for j=#decodedData,1,-1 do
+									table.remove(errormessage,j)
+								end
+									
+							elseif ( i == 2 ) then
+							       
+							end
+						end
+					end
+							
+					print(#errormessage)
+					--顯示回傳錯誤訊息
+					if(#errormessage == 5) then
+						alert = native.showAlert( "Riddle Me There", errormessage[1].."\n"..errormessage[2].."\n"..errormessage[3].."\n"..errormessage[4].."\n"..errormessage[5], {"OK"}, onComplete )
+					elseif(#errormessage == 4) then
+						alert = native.showAlert( "Riddle Me There", errormessage[1].."\n"..errormessage[2].."\n"..errormessage[3].."\n"..errormessage[4], {"OK"}, onComplete )
+					elseif(#errormessage == 3) then
+						alert = native.showAlert( "Riddle Me There", errormessage[1].."\n"..errormessage[2].."\n"..errormessage[3], {"OK"}, onComplete )
+					elseif(#errormessage == 2) then
+						alert = native.showAlert( "Riddle Me There", errormessage[1].."\n"..errormessage[2], {"OK"}, onComplete )
+					elseif(#errormessage == 1) then
+						alert = native.showAlert( "Riddle Me There", errormessage[1], {"OK"}, onComplete )
+					end
+				end
+	    	end
+		end
+
+		local headers = {}
+
+		headers["Content-Type"] = "application/x-www-form-urlencoded"
+		headers["Accept-Language"] = "en-US"
+				
+		local body = "email="..email.text.."&password="..password.text.."&username="..username.text.."&age="..age.text.."&country="..session.."&gender="..Gender.."&firstname="..Firstname.text.."&lastname="..Lastname.text
+				
+		local params = {}
+		params.headers = headers
+		params.body = body
+
+		network.request( "http://140.131.12.56/Register.php", "POST", networkListener, params )
+
+				
+
+
+					
+		
+	end
+
+	local returnPress = widget.newButton
+	{ 
+		defaultFile = "im/but1.jpg",
+		overFile = "im/but1.jpg",
+		emboss = true,
+		onPress = registerbut,
+			--onRelease = button1Release,
+	}
+	sceneGroup:insert(returnPress)
+	returnPress.x =display.contentWidth/2
+	returnPress.y =display.contentHeight/1.3
+
+end
+
+function scene:show( event )
+	local phase = event.phase
+	
+	--composer.removeScene( "country" )
+	if "did" == phase then
+		print( "1: show event, phase did" )
+			
+		local showMem = function()
+			--image1:addEventListener( "touch", image1 )
+			--image2:addEventListener( "touch", image2 )
+			
+		end
+		memTimer = timer.performWithDelay( 500, showMem, 1 )
+	end	
+end
+
+function scene:hide( event )
+	local phase = event.phase
+	if "will" == phase then
+		print( "1: hide event, phase will" )
+	end
+end
+
+
+
+function scene:destroy( event )
+	print( "((destroying scene 1's view))" )
+end
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+return scene
