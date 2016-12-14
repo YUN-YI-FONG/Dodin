@@ -1,27 +1,28 @@
---MenuPage.lua
+-----------------------------------------------------------------------------------------
+--
+-- MenuPage.lua
+--
+-----------------------------------------------------------------------------------------
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-
 ---------------------------------------------------------------------------------
 local CreateRoom = function ( self,event ) 
-           composer.gotoScene( "CreateRoom", "fade", 400 )
+    composer.gotoScene( "CreateRoom", "fade", 400 )
 end
 
-local fastjoin = function ( self,event ) 
-           composer.gotoScene( "fastjoin", "fade", 400 )
+local JoinLobby = function ( self,event ) 
+    composer.gotoScene( "Lobby", "fade", 400 )
 end
 
-local JoinRoom = function ( self,event ) 
-           composer.gotoScene( "JoinRoom", "fade", 400 )
+local FastJoin = function ( self,event ) 
+    composer.gotoScene( "Room", "fade", 400 )
 end
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
-		
 		composer.gotoScene( "", "slideLeft", 800  )
-
 		return true
 	end
 end
@@ -37,9 +38,7 @@ end
 
 local function onSceneTouch2( self, event )
 	if event.phase == "began" then
-		
 		composer.gotoScene( "", "slideLeft", 800  )
-
 		return true
 	end
 end
@@ -53,60 +52,58 @@ function scene:create( event )
 
 	image1 = display.newImage( "Textures/rank.png" )
 	image1.x =display.contentWidth/6
-	image1.y =display.contentHeight/1.2
+	image1.y =display.contentHeight/1.15
 
 	image2 = display.newImage( "Textures/shops.png" )
-	image2.x = display.contentWidth/1.85
-	image2.y = display.contentHeight/1.2
+	image2.x = display.contentWidth/2
+	image2.y = display.contentHeight/1.15
 
 	image3 = display.newImage( "Textures/sound_on.png" )
-	image3.x = display.contentWidth/1.1
-	image3.y = display.contentHeight/1.2
+	image3.x = display.contentWidth / 1.2
+	image3.y = display.contentHeight/1.15
 
 	sceneGroup:insert( image )
-	sceneGroup:insert( image1)	image1.touch = onSceneTouch
-	sceneGroup:insert( image2)	image2.touch = onSceneTouch1
-	sceneGroup:insert( image3)	image3.touch = onSceneTouch2
+	sceneGroup:insert( image1)	image1.touch = JoinLobby
+	sceneGroup:insert( image2)	image2.touch = nil
+	sceneGroup:insert( image3)	image3.touch = nil
 ---------------------------------------------------------------------------------
-
-local CreateRoom = widget.newButton
- { 
-	
-	defaultFile = "Textures/CreateRoom.png",
-	overFile = "Textures/CreateRoom_down.png",
-	emboss = true,
-	onPress = CreateRoom,
-	--onRelease = button1Release,
- }
-     sceneGroup:insert(CreateRoom)
+	local CreateRoom = widget.newButton
+	 { 
+		defaultFile = "Textures/CreateRoom.png",
+		overFile = "Textures/CreateRoom_down.png",
+		emboss = true,
+		onPress = CreateRoom,
+		--onRelease = button1Release,
+	 }
+    
+    sceneGroup:insert(CreateRoom)
     CreateRoom.x =display.contentWidth/6
 	CreateRoom.y =display.contentHeight/2.5
 
-	local fastjoin = widget.newButton
- { 
-	
-	defaultFile = "Textures/fastjoin.png",
-	overFile = "Textures/fastjoin_down.png",
-	emboss = true,
-	onPress = fastjoin,
-	--onRelease = button1Release,
- }
-     sceneGroup:insert(fastjoin)
-    fastjoin.x =display.contentWidth/1.85
-	fastjoin.y =display.contentHeight/2.5
+	local JoinLobby = widget.newButton
+	{ 
+		defaultFile = "Textures/JoinLobby.png",
+		overFile = "Textures/JoinLobby_down.png",
+		emboss = true,
+		onPress = JoinLobby,
+		--onRelease = button1Release,
+ 	}
+    sceneGroup:insert(JoinLobby)
+    JoinLobby.x =display.contentWidth/2
+	JoinLobby.y =display.contentHeight/2.5
 
-	local JoinRoom = widget.newButton
- { 
-	
-	defaultFile = "Textures/JoinRoom.png",
-	overFile = "Textures/JoinRoom_down.png",
-	emboss = true,
-	onPress = JoinRoom,
-	--onRelease = button1Release,
- }
-     sceneGroup:insert(JoinRoom)
-    JoinRoom.x =display.contentWidth/1.1
-	JoinRoom.y =display.contentHeight/2.5
+	local FastJoin = widget.newButton
+	{ 
+		defaultFile = "Textures/fastjoin.png",
+		overFile = "Textures/fastjoin_down.png",
+		emboss = true,
+		onPress = FastJoin,
+		--onRelease = button1Release,
+ 	}
+    sceneGroup:insert(FastJoin)
+    FastJoin.x =display.contentWidth/1.2
+	FastJoin.y =display.contentHeight/2.5
+
 end
 ---------------------------------------------------------------------------------
 
@@ -123,10 +120,9 @@ function scene:show( event )
 			image1:addEventListener( "touch", image1 )
 			image2:addEventListener( "touch", image2 )
 			image3:addEventListener( "touch", image3 )
-
 		end
+
 		memTimer = timer.performWithDelay( 1000, showMem, 1 )
-	
 	end
 	
 end

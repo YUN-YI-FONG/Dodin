@@ -3,9 +3,19 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
+print("==============Game is running==============")
+-- Hide the status bar.
+display.setStatusBar(display.HiddenStatusBar)
+-- Include Global module
+require "Libs.PhotonTool"
+photonTool = PhotonTool.new(30)
 
--- Your code here
+-- Include local module.
+local composer = require( "composer" )
 
-  local composer = require( "composer" )
+print(display.actualContentHeight)
 
-composer.gotoScene( "Dodin",frad,400)
+photonTool:printX()
+
+composer.gotoScene( "Dodin", frad,400)
+

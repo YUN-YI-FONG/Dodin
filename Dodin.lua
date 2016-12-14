@@ -1,4 +1,8 @@
---Dodin.lua
+-----------------------------------------------------------------------------------------
+--
+-- Dodin.lua
+--
+-----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
 local scene = composer.newScene()
@@ -6,15 +10,7 @@ local scene = composer.newScene()
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
 		
-		composer.gotoScene( "menuPage", "slideLeft", 800  )
-
-		return true
-	end
-end
-local function onSceneTouch1( self, event )
-	if event.phase == "began" then
-		
-		composer.gotoScene( "menuPage", "slideLeft", 800  )
+		composer.gotoScene( "MenuPage", "slideLeft", 800  )
 
 		return true
 	end
@@ -32,14 +28,14 @@ function scene:create( event )
 	image.y = display.contentCenterY
 
 	image1 = display.newImage( "Textures/titletext.png" )
-	image1.x = display.contentWidth/6.5
-	image1.y = display.contentHeight/4.6
+	image1.x = display.contentWidth/4
+	image1.y = display.contentHeight/4.2
 	
 	sceneGroup:insert( image )
-	sceneGroup:insert( image1)
+	sceneGroup:insert( image1 )
 
 	image.touch = onSceneTouch
-	image1.touch = onSceneTouch1
+	image1.touch = onSceneTouch
 end
 
 function scene:show( event )	
@@ -55,13 +51,9 @@ function scene:show( event )
 			-- text2.x = display.contentWidth * 0.5
 		end
 		memTimer = timer.performWithDelay( 1000, showMem, 1 )
-	
 	end
 	
 end
-
-
-
 
 function scene:hide( event )
 	
