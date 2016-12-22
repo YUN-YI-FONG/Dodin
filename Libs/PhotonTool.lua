@@ -80,8 +80,7 @@ end
 function PhotonTool:JoinRoom( ... )
 	
 end
-<<<<<<< HEAD
-=======
+
 
 function PhotonTool:Disconnect()
 	self.client:disconnect()
@@ -109,13 +108,12 @@ end
 function PhotonTool:SetUser(id)
 	print("setUserId:"..id)
 	self.client:setUserId(id)
->>>>>>> origin/master
+end
 
 function PhotonTool:Disconnect()
 	self.client:disconnect()
 end
 
-<<<<<<< HEAD
 function PhotonTool:Update()
 	self.client:service()
 end
@@ -134,9 +132,9 @@ function PhotonTool:timer(event)
 		self.cancel(event.source)
 	end
 end
-=======
+
 function PhotonTool:GetUser()
 	self.client:getUserId()
 	print("getUserId :"..self.client:getUserId())
 end
->>>>>>> origin/master
+
