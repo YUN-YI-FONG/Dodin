@@ -1,52 +1,51 @@
---fastjoin.lua
-
+---------------------------------------------------------------------------------
+--
+-- Lobby.lua
+--
+---------------------------------------------------------------------------------
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
-		
-		composer.gotoScene( "fastjoin2", "slideLeft", 800  )
-
+		composer.gotoScene( "Scenes.Room", "slideLeft", 800  )
 		return true
 	end
 end
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event ) 
-           composer.gotoScene( "MenuPage", "fade", 400 )
+    composer.gotoScene( "Scenes.MenuPage", "fade", 400 )
 end
-
-
 ---------------------------------------------------------------------------------
 function scene:create( event )
 	local sceneGroup = self.view
-	
+
 	image = display.newImage( "Textures/LobbyBackground.png" )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
 
 	image1 = display.newImage( "Textures/RoomTitle.png" )
-	image1.x = display.contentWidth/1.7
-	image1.y = display.contentHeight/9.9
+	image1.x = display.contentWidth/1.75
+	image1.y = image1.height / 2  + 30
 
 	image2 = display.newImage( "Textures/MainFarm.png" )
 	image2.x = display.contentWidth/1.7
 	image2.y = display.contentHeight/1.8
 
-	image3 = display.newImage( "Textures/Room.png" )
+	image3 = display.newImage( "Textures/Lobby/Room.png" )
 	image3.x = display.contentWidth/1.7
 	image3.y = display.contentHeight/3.5
 
-	image4 = display.newImage( "Textures/Room.png" )
+	image4 = display.newImage( "Textures/Lobby/Room.png" )
 	image4.x = display.contentWidth/1.7
 	image4.y = display.contentHeight/1.8
 
 	image5 = display.newImage( "Textures/Rooms.png" )
-	image5.x = display.contentWidth*0.08
-	image5.y = display.contentHeight/2.8
+	image5.x = image5.width / 2 + 20
+	image5.y = display.contentHeight/3.5
 
-	image6 = display.newImage( "Textures/enter.png" )
+	image6 = display.newImage( "Textures/Lobby/Enter.png" )
 	image6.x = display.contentWidth/1.1
 	image6.y = display.contentHeight/3.5
 
@@ -62,18 +61,17 @@ function scene:create( event )
 	
 ---------------------------------------------------------------------------------
 
-local returnPress = widget.newButton
- { 
-	defaultFile = "Textures/returnPress.png",
-	overFile = "Textures/returnPress.png",
-	emboss = true,
-	onPress = returnPress,
-	--onRelease = button1Release,
- }
-     sceneGroup:insert(returnPress)
-	returnPress.x = display.contentWidth*0.03
-	returnPress.y = display.contentHeight/7
-
+	local returnPress = widget.newButton
+	 { 
+		defaultFile = "Textures/returnPress.png",
+		overFile = "Textures/returnPress.png",
+		emboss = true,
+		onPress = returnPress,
+		--onRelease = button1Release,
+	 }
+    sceneGroup:insert(returnPress)
+	returnPress.x =  returnPress.width / 2 
+	returnPress.y =  returnPress.height / 2
 
 end
 ---------------------------------------------------------------------------------

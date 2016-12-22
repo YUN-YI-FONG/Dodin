@@ -13,11 +13,11 @@ local CreateRoom = function ( self,event )
 end
 
 local JoinLobby = function ( self,event ) 
-    composer.gotoScene( "Lobby", "fade", 400 )
+    composer.gotoScene( "Scenes.Lobby", "fade", 400 )
 end
 
 local FastJoin = function ( self,event ) 
-    composer.gotoScene( "Room", "fade", 400 )
+    composer.gotoScene( "Scenes.Room", "fade", 400 )
 end
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
@@ -50,15 +50,15 @@ function scene:create( event )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
 
-	image1 = display.newImage( "Textures/rank.png" )
+	image1 = display.newImage( "Textures/Menu/rank.png" )
 	image1.x =display.contentWidth/6
 	image1.y =display.contentHeight/1.15
 
-	image2 = display.newImage( "Textures/shops.png" )
+	image2 = display.newImage( "Textures/Menu/shops.png" )
 	image2.x = display.contentWidth/2
 	image2.y = display.contentHeight/1.15
 
-	image3 = display.newImage( "Textures/sound_on.png" )
+	image3 = display.newImage( "Textures/Menu/sound_on.png" )
 	image3.x = display.contentWidth / 1.2
 	image3.y = display.contentHeight/1.15
 
@@ -69,8 +69,8 @@ function scene:create( event )
 ---------------------------------------------------------------------------------
 	local CreateRoom = widget.newButton
 	 { 
-		defaultFile = "Textures/CreateRoom.png",
-		overFile = "Textures/CreateRoom_down.png",
+		defaultFile = "Textures/Menu/CreateRoom.png",
+		overFile = "Textures/Menu/CreateRoom_down.png",
 		emboss = true,
 		onPress = CreateRoom,
 		--onRelease = button1Release,
@@ -82,8 +82,8 @@ function scene:create( event )
 
 	local JoinLobby = widget.newButton
 	{ 
-		defaultFile = "Textures/JoinLobby.png",
-		overFile = "Textures/JoinLobby_down.png",
+		defaultFile = "Textures/Menu/JoinLobby.png",
+		overFile = "Textures/Menu/JoinLobby_down.png",
 		emboss = true,
 		onPress = JoinLobby,
 		--onRelease = button1Release,
@@ -94,8 +94,8 @@ function scene:create( event )
 
 	local FastJoin = widget.newButton
 	{ 
-		defaultFile = "Textures/fastjoin.png",
-		overFile = "Textures/fastjoin_down.png",
+		defaultFile = "Textures/Menu/fastjoin.png",
+		overFile = "Textures/Menu/fastjoin_down.png",
 		emboss = true,
 		onPress = FastJoin,
 		--onRelease = button1Release,
@@ -103,6 +103,7 @@ function scene:create( event )
     sceneGroup:insert(FastJoin)
     FastJoin.x =display.contentWidth/1.2
 	FastJoin.y =display.contentHeight/2.5
+
 
 end
 ---------------------------------------------------------------------------------
@@ -113,7 +114,7 @@ function scene:show( event )
 	
 	if "did" == phase then
 	
-		print( "1: show event, phase did" )
+		-- print( "1: show event, phase did" )
 	
 		local showMem = function()
 			image:addEventListener( "touch", image )
@@ -133,7 +134,7 @@ function scene:hide( event )
 	
 	if "will" == phase then
 	
-		print( "1: hide event, phase will" )
+		-- print( "1: hide event, phase will" )
 	
 		-- remove touch listener for image
 		image:removeEventListener( "touch", image )

@@ -1,21 +1,24 @@
+require "Libs.PhotonTool"
 -----------------------------------------------------------------------------------------
---
 -- main.lua
---
 -----------------------------------------------------------------------------------------
 print("==============Game is running==============")
--- Hide the status bar.
+-- System Controller.
 display.setStatusBar(display.HiddenStatusBar)
+system.activate('multitouch')
+
 -- Include Global module
-require "Libs.PhotonTool"
-photonTool = PhotonTool.new(30)
+CloudAppInfo = require("cloud-app-info")
+photonTool = PhotonTool.new()
 
 -- Include local module.
 local composer = require( "composer" )
+composer.recycleOnSceneChange = true -- Automatically remove scenes from memory
 
-print(display.actualContentHeight)
+-- Create and link peer .
+photonTool:Create()
+photonTool:Connect()
 
-photonTool:printX()
-
-composer.gotoScene( "Dodin", frad,400)
-
+-- To Title scene.
+composer.gotoScene( "Scenes.Dodin", frad,400)
+	

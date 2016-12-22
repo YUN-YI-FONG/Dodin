@@ -3,18 +3,17 @@
 -- Dodin.lua
 --
 -----------------------------------------------------------------------------------------
-
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-local function onSceneTouch( self, event )
+function onSceneTouch( self, event )
 	if event.phase == "began" then
-		
-		composer.gotoScene( "MenuPage", "slideLeft", 800  )
-
+		composer.gotoScene( "Scenes.MenuPage", "slideLeft", 800  )
 		return true
 	end
 end
+
+
 ---------------------------------------------------------------------------------
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
@@ -23,11 +22,11 @@ end
 function scene:create( event )
 	local sceneGroup = self.view
 	
-	image = display.newImage( "Textures/titleBG.png" )
+	image = display.newImage( "Textures/Title/titleBG.png" )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
 
-	image1 = display.newImage( "Textures/titletext.png" )
+	image1 = display.newImage( "Textures/Title/titletext.png" )
 	image1.x = display.contentWidth/4
 	image1.y = display.contentHeight/4.2
 	
