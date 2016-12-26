@@ -1,3 +1,4 @@
+require "Libs.RoomList"
 ---------------------------------------------------------------------------------
 --
 -- Lobby.lua
@@ -6,6 +7,8 @@
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+
+roomlist = RoomList.new()
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
@@ -59,55 +62,9 @@ function scene:create( event )
 	sceneGroup:insert( image4 )
 	sceneGroup:insert( image6 )	image6.touch = onSceneTouch
 	
+	roomlist:RoomTableView()
 ---------------------------------------------------------------------------------
---每一欄位要插入的物件
-local function onRowRender( event )
-        local row = event.row
-        local rowIndex=row.index
-        local groupContentWidth = row.contentWidth
-        local groupContentHeight = row.contentHeight
 
-        rowimg = display.newImage( "Textures/Lobby/Room.png" )
-        rowimg.x =groupContentWidth*0.5
-        rowimg.y = groupContentHeight*0.5
-        row:insert(rowimg)
-        rowenterbut = display.newImage( "Textures/Lobby/Enter.png" )
-		rowenterbut.x = groupContentWidth*0.91
-		rowenterbut.y = groupContentHeight*0.5
-		row:insert(rowenterbut)
-    ---------------------------------------------------------------------------------
-
-    end
-    -- Create the widget
-    tableView = widget.newTableView{
-        left =display.contentHeight*0.392,
-        top = 170,
-        height = display.contentHeight*0.8,
-        width = display.contentWidth*0.74,
-        hideBackground = true,
-        listener = tableViewListener,
-        onRowRender = onRowRender,
-       --onRowTouch = onRowTouch,
-        --listener = scrollListener
-    }
-    sceneGroup:insert(tableView)
-           
-    
-    for i = 1, 5 do
-        local params={}
-        local isCategory = false
-        local rowHeight = 230
-        local rowColor = {default={1,1,1,0}}
-        local lineColor = { 0.5, 0.5, 0.5 }
-        
-        
-        params.isCategory= false
-        params.rowHeight = 230
-        params.rowColor = rowColor
-        
-        tableView:insertRow(params)
-
-    end
 
 
 
@@ -162,6 +119,7 @@ end
 
 function scene:destroy( event )
 	print( "((destroying scene 1's view))" )
+	roomlist:RemoveTableview()
 end
 
 ---------------------------------------------------------------------------------
