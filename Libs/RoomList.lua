@@ -24,7 +24,7 @@ function RoomList:RoomTableView(...)
     self.group = display.newGroup()
 
 	--每一欄位要插入的物件
-    local function onRowRender( event )
+    function onRowRender( event )
         self.row = event.row
         self.rowIndex=self.row.index
         self.groupContentWidth = self.row.contentWidth
@@ -79,14 +79,4 @@ function RoomList:RemoveTableview()
 	
 end
 
-function RoomList:Register( email,password,username,age,country,gender,firstname,lastname )
-	
-
-
-end
-
-function RoomList:RegisterError( errorMsg )
-
-
-end
 
