@@ -110,28 +110,6 @@ function PhotonTool:SetUser(id)
 	self.client:setUserId(id)
 end
 
-function PhotonTool:Disconnect()
-	self.client:disconnect()
-end
-
-function PhotonTool:Update()
-	self.client:service()
-end
-
-
-function PhotonTool:RemoveSelf( ... )
-	-- body
-end
-
-
-function PhotonTool:timer(event)
-	local str = nul
-	self:Update()
-
-	if (self.ENDCONNECTION) then
-		self.cancel(event.source)
-	end
-end
 
 function PhotonTool:GetUser()
 	self.client:getUserId()
