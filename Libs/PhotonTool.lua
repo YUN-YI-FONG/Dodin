@@ -8,6 +8,9 @@ PhotonTool = class()
 	PhotonTool.tableutil = nil
 	PhotonTool.Logger = nil
 	PhotonTool.client = nil
+
+	PhotonTool.RoomList = {}
+
 	----- STATES -----
 	PhotonTool.INITIALIZED = "Initialized"
 	PhotonTool.CREATED = "Created"
@@ -18,6 +21,11 @@ PhotonTool = class()
 	PhotonTool.state = PhotonTool.INITIALIZED
 	PhotonTool.END_CONNECTION_CODE = 100 -- TODO: get rid of this
 	PhotonTool.ENDCONNECTION = false
+	
+	PhotonTool.basicRoomCreateOptions= {
+		maxPlayers = 2,
+		customGameProperties = { gamemode = 1}
+	}
 
 function PhotonTool:Ctor( ... )
 	-- Initialize
@@ -54,8 +62,24 @@ function PhotonTool:Create(...)
 	end
 
 	function client:onRoomList( rooms )
+		local c 
+		local roomArray = {}
+		-- Get RoomInfo from Photon
+		for k,v in pairs(rooms) do
+			c= v:getCustomProperty("gamemode")
+			roomArray[#roomArray + 1] =  {v.name,v.maxPlayers,v.playerCount,c}
+			
+			print(c)
+		end
+
+		tool.RoomList = roomArray
+
+		print("onRoomList:", rooms , "Count:" , #roomArray)
+	end
+
+	function client:onRoomListUpdate(rooms, roomsUpdated, roomsAdded, roomsRemoved)
 		-- body
-		print("onRoomList:", rooms , "Count:" , table.getn(rooms))
+		self:onRoomList(rooms)
 	end
 
 	function client:onStateChange( state )
@@ -67,6 +91,9 @@ function PhotonTool:Create(...)
 	self.state = self.CREATED
 end
 
+-----------------------
+-- 連線相關 link function --
+-----------------------
 function PhotonTool:Connect()
 	if (self.state == self.CREATED) then
 		self.client.logger:info("Start")
@@ -77,17 +104,8 @@ function PhotonTool:Connect()
 	end
 end
 
-function PhotonTool:JoinRoom( ... )
-	
-end
-
-
 function PhotonTool:Disconnect()
 	self.client:disconnect()
-end
-
-function PhotonTool:Update()
-	self.client:service()
 end
 
 
@@ -96,6 +114,44 @@ function PhotonTool:RemoveSelf( ... )
 end
 
 
+
+-----------------------
+-- 設定玩家相關 function --
+-----------------------
+
+function PhotonTool:SetUser(id)
+	print("setUserId:"..id)
+	self.client:setUserId(id)
+end
+
+
+function PhotonTool:GetUser()
+	print("getUserId :"..self.client:getUserId())
+	return self.client:getUserId()
+	
+end
+
+---------------------------
+-- 大廳運作相關 function --
+---------------------------
+
+function PhotonTool:CreateRoom( ... )
+	-- body
+	
+	self.client:createRoom(Roomname,self.basicRoomCreateOptions)
+end
+
+function PhotonTool:JoinRoom( ... )
+	
+end
+
+function PhotonTool:GetRoomList()
+	return self.RoomList
+end
+
+---------------------------
+-- 常駐運作相關 function --
+---------------------------
 function PhotonTool:timer(event)
 	local str = nul
 	self:Update()
@@ -105,14 +161,6 @@ function PhotonTool:timer(event)
 	end
 end
 
-function PhotonTool:SetUser(id)
-	print("setUserId:"..id)
-	self.client:setUserId(id)
+function PhotonTool:Update()
+	self.client:service()
 end
-
-
-function PhotonTool:GetUser()
-	self.client:getUserId()
-	print("getUserId :"..self.client:getUserId())
-end
-
