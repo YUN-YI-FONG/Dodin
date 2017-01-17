@@ -1,4 +1,5 @@
-require "Libs.Classes"
+require('Module.RoomInfo')
+require('Module.RoomActor')
 
 PhotonTool = class()
 	-- Define Variables
@@ -10,6 +11,7 @@ PhotonTool = class()
 	PhotonTool.client = nil
 
 	PhotonTool.RoomList = {}
+	
 
 	----- STATES -----
 	PhotonTool.INITIALIZED = "Initialized"
@@ -22,13 +24,25 @@ PhotonTool = class()
 	PhotonTool.END_CONNECTION_CODE = 100 -- TODO: get rid of this
 	PhotonTool.ENDCONNECTION = false
 	
+
 	PhotonTool.basicRoomCreateOptions= {
 		maxPlayers = 2,
-		customGameProperties = { gamemode = 1}
+
+		customGameProperties = { 
+			gameType = 1 , 
+			creator = "nil"
+		
+		}
+
+	}
+
+	PhotonTool.basicRoomOptions =  {
+
 	}
 
 function PhotonTool:Ctor( ... )
 	-- Initialize
+	
 	if (pcall(require, "plugin.photon")) then
 		print ("Demo: main module:", "Corona plugin used")
 		self.Core = require "plugin.photon"
@@ -47,6 +61,7 @@ function PhotonTool:Ctor( ... )
 end
 
 function PhotonTool:Create(...)
+	local composer = require("composer")
 	local tool = self
 	local client = self.LoadBalancingClient.new(CloudAppInfo.MasterAddress , CloudAppInfo.AppId, CloudAppInfo.AppVersion)
 	-- client:setLogLevel(self.Logger.Level.FATAL)-- limits to fatal logs, remove to see what Photon is doing
@@ -62,29 +77,39 @@ function PhotonTool:Create(...)
 	end
 
 	function client:onRoomList( rooms )
-		local c 
+		local creator, gamemode, roomInfo
 		local roomArray = {}
+
 		-- Get RoomInfo from Photon
-		for k,v in pairs(rooms) do
-			c= v:getCustomProperty("gamemode")
-			roomArray[#roomArray + 1] =  {v.name,v.maxPlayers,v.playerCount,c}
-			
-			print(c)
+		for roomNum ,room in pairs(rooms) do
+			-- GetCustomProperty
+			creator = room:getCustomProperty("creator")
+			gameType = room:getCustomProperty("gameType")
+			-- Save to Module and add List
+			roomInfo = RoomInfo.new(room.name , creator, room.maxPlayers, room.playerCount, gameType)
+			roomArray[#roomArray + 1] =  roomInfo
 		end
 
 		tool.RoomList = roomArray
 
-		print("onRoomList:", rooms , "Count:" , #roomArray)
 	end
 
 	function client:onRoomListUpdate(rooms, roomsUpdated, roomsAdded, roomsRemoved)
 		-- body
 		self:onRoomList(rooms)
+		print("onRoomListUpdate:", rooms)
 	end
 
 	function client:onStateChange( state )
 		-- body
 		print("State:", state , tostring(tool.LoadBalancingClient.StateToName(state)))
+		
+		if(tostring(tool.LoadBalancingClient.StateToName(state)) == "JoinedLobby")then
+			composer.gotoScene("Scenes.MenuPage", "fade", 400)
+		end
+		if(tostring(tool.LoadBalancingClient.StateToName(state)) == "Joined")then
+			composer.gotoScene( "Scenes.Room",  "fade",400 )
+		end
 	end
 
 	self.client = client
@@ -97,10 +122,11 @@ end
 function PhotonTool:Connect()
 	if (self.state == self.CREATED) then
 		self.client.logger:info("Start")
-		self.client:connect()
+		self.client:connectToRegionMaster("kr")
 		self.runTimes = 0
-		self.timerTable = timer.performWithDelay( 100, self, 0 ) -- test table can be used to cancel timer
+		self.timerTable = timer.performWithDelay( 1000, self, 0 ) -- test table can be used to cancel timer
 		self.state = self.CONNECTING
+		
 	end
 end
 
@@ -113,7 +139,17 @@ function PhotonTool:RemoveSelf( ... )
 	-- body
 end
 
+function PhotonTool:SetAuthentication(username , password)
 
+	-- load AuthenticationType from LoadBalancingConstants
+	local AuthenticationType = self.LoadBalancingConstants.CustomAuthenticationType
+
+	print(username, password)
+	self.client:setCustomAuthentication("username=".. username.."&password="..password, AuthenticationType.Custom )
+
+
+	self:Connect()
+end
 
 -----------------------
 -- 設定玩家相關 function --
@@ -126,23 +162,69 @@ end
 
 
 function PhotonTool:GetUser()
-	print("getUserId :"..self.client:getUserId())
+	print("getUserId :", self.client:getUserId())
 	return self.client:getUserId()
 	
 end
 
+
+function PhotonTool:setName(name)
+	self.client:myActor():setName(name)
+end
+
+---------------------------
+-- 房間運作相關 function --
+---------------------------
+function PhotonTool:GetRoomActorInfo()
+	local actorArray = {} 
+	local myRoomActors = self.client:myRoomActors()
+	
+	-- get data from photon 
+	for actorNum, actor in pairs( myRoomActors ) do
+		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"))
+		--{actor.name,actor.actorNr,actor:getCustomProperty("isReady")}
+		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"))
+	end
+
+	return actorArray 	
+end
+
+function PhotonTool:setCustomProperty( playerstate )
+	
+	self.client:myActor():setCustomProperty("isReady", playerstate)
+	
+end
+
+
+
+function  PhotonTool:GetRoomInfo()
+	-- Get Room
+	local room = self.client:myRoom()
+	local creator = room:getCustomProperty("creator")
+	local gameType = room:getCustomProperty("gameType")
+
+	local roomInfo = RoomInfo.new(room.name , creator, room.maxPlayers, room.playerCount, gameType)
+
+	return roomInfo
+end
 ---------------------------
 -- 大廳運作相關 function --
 ---------------------------
 
-function PhotonTool:CreateRoom( ... )
-	-- body
-	
-	self.client:createRoom(Roomname,self.basicRoomCreateOptions)
+function PhotonTool:CreateRoom( roomName )
+	-- 取得創建房間設定
+	local createOptions = self.basicRoomCreateOptions
+	createOptions.customGameProperties.creator = "Yee"
+
+	self.client:createRoom(roomName, createOptions)
 end
 
-function PhotonTool:JoinRoom( ... )
-	
+function PhotonTool:JoinRoom( RoomName )
+	self.client:joinRoom(RoomName, self.basicRoomOptions, self.basicRoomCreateOptions)
+end
+
+function PhotonTool:LeaveRoom()
+	self.client:leaveRoom()
 end
 
 function PhotonTool:GetRoomList()
@@ -157,7 +239,7 @@ function PhotonTool:timer(event)
 	self:Update()
 
 	if (self.ENDCONNECTION) then
-		self.cancel(event.source)
+		timer.cancel(event.source)
 	end
 end
 

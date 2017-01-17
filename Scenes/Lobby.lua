@@ -1,4 +1,5 @@
 require "Libs.RoomList"
+require "Libs.PhotonTool"
 ---------------------------------------------------------------------------------
 --
 -- Lobby.lua
@@ -7,23 +8,15 @@ require "Libs.RoomList"
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
-
-roomlist = RoomList.new()
----------------------------------------------------------------------------------
-local function onSceneTouch( self, event )
-	if event.phase == "began" then
-		composer.gotoScene( "Scenes.Room", "slideLeft", 800  )
-		return true
-	end
-end
+local roomList = RoomList.new(composer , widget)
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event ) 
-    composer.gotoScene( "Scenes.MenuPage", "fade", 400 )
+    composer.gotoScene( "Scenes.MenuPage",  "fade",400 )
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
 	local sceneGroup = self.view
-
+	
 	image = display.newImage( "Textures/LobbyBackground.png" )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
@@ -36,39 +29,18 @@ function scene:create( event )
 	image2.x = display.contentWidth/1.7
 	image2.y = display.contentHeight/1.8
 
-	image3 = display.newImage( "Textures/Lobby/Room.png" )
-	image3.x = display.contentWidth/1.7
-	image3.y = display.contentHeight/3.5
-
-	image4 = display.newImage( "Textures/Lobby/Room.png" )
-	image4.x = display.contentWidth/1.7
-	image4.y = display.contentHeight/1.8
-
 	image5 = display.newImage( "Textures/Rooms.png" )
 	image5.x = image5.width / 2 + 20
 	image5.y = display.contentHeight/3.5
-
-	image6 = display.newImage( "Textures/Lobby/Enter.png" )
-	image6.x = display.contentWidth/1.1
-	image6.y = display.contentHeight/3.5
-
-
 	
 	sceneGroup:insert( image )
 	sceneGroup:insert( image1 )
 	sceneGroup:insert( image5 )
 	sceneGroup:insert( image2 )
-	sceneGroup:insert( image3 )
-	sceneGroup:insert( image4 )
-	sceneGroup:insert( image6 )	image6.touch = onSceneTouch
 	
-	roomlist:RoomTableView()
+	
+	roomList:RoomTableView()
 ---------------------------------------------------------------------------------
-
-
-
-
-
 	local returnPress = widget.newButton
 	 { 
 		defaultFile = "Textures/returnPress.png",
@@ -83,7 +55,6 @@ function scene:create( event )
 
 end
 ---------------------------------------------------------------------------------
-
 function scene:show( event )
 	
 	local phase = event.phase
@@ -93,10 +64,13 @@ function scene:show( event )
 		print( "1: show event, phase did" )
 	
 		local showMem = function()
-			image6:addEventListener( "touch", image6 )
+			local newRoomList = photonTool:GetRoomList()
+			roomList:UpdateRoomList(newRoomList)
+			print("Update?")
+
 		end
-		memTimer = timer.performWithDelay( 1000, showMem, 1 )
-	
+		memTimer = timer.performWithDelay( 500, showMem, 0 )
+
 	end
 	
 end
@@ -106,20 +80,21 @@ function scene:hide( event )
 	local phase = event.phase
 	
 	if "will" == phase then
-	
-		print( "1: hide event, phase will" )
-	
-		-- remove touch listener for image
-		image6:removeEventListener( "touch", image6 )
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
+		roomList:RemoveTableview()
+		roomList = nil
+		
+		print( "1: hide event, phase will" )
+		
+		
 	end
 end
 
 
 function scene:destroy( event )
 	print( "((destroying scene 1's view))" )
-	roomlist:RemoveTableview()
+	
 end
 
 ---------------------------------------------------------------------------------

@@ -4,61 +4,37 @@ DatabaseMysql = class()
 	
 	DatabaseMysql.decodedData = nil
 	DatabaseMysql.json = nil
-	myNewData = nil
-	phpresponse = nil
-	headers = nil
-	body = nil
-	params = nil
-	errormessage = nil
-	nickname = nil
-	path = nil
-	file = nil
-	content = nil
-function DatabaseMysql:Ctor( ... )
+	DatabaseMysql.myNewData = nil
+	DatabaseMysql.phpresponse = nil
+	DatabaseMysql.headers = nil
+	DatabaseMysql.body = nil
+	DatabaseMysql.body2 = nil
+	DatabaseMysql.params = nil
+	DatabaseMysql.params2 = nil
+	DatabaseMysql.errormessage = nil
+	DatabaseMysql.nickname = nil
+	DatabaseMysql.path = nil
+	DatabaseMysql.file = nil
+	DatabaseMysql.content = nil
+function DatabaseMysql:Ctor( composer )
 	-- Initialize
 	self.json = require ( "json" )
-	self.composer =require ("composer")
+	self.composer =composer
 	self.myNewData = {}
 	self.decodedData = {}
 	self.headers = {}
 	self.headers["Content-Type"] = "application/x-www-form-urlencoded"
 	self.headers["Accept-Language"] = "en-US"
+	self.headers2 = {}
+	self.headers2["Content-Type"] = "application/x-www-form-urlencoded"
+	self.headers2["Accept-Language"] = "en-US"
 	self.body = {}
+	self.body2 = {}
 	self.params = {}
+	self.params2 = {}
 	self.errormessage = {}
 	self.nickname = ""
 
-end
-
-function DatabaseMysql:Login(email,password)
-
-	function networkListener( event )
-
-		if ( event.isError ) then
-	        print( "Network error: ", event.response )
-		else
-			
-			self.myNewData = event.response
-			print ( "RESPONSE: " .. event.response )
-			self.decodedData=self.json.decode(self.myNewData)
-			self.phpresponse= self.decodedData["ResultCode"]
-
-	        if (self.phpresponse == 1) then
-				self:Returnusername(email)
-				--self.composer.gotoScene("Home")
-				print("success")
-			end
-	    end
-	end
-	
-
-	self.body = "email="..email.."&password="..password
-	
-	self.params = {}
-	self.params.headers = self.headers
-	self.params.body =self.body
-
-	network.request( "http://140.131.12.56/Login22.php", "POST", networkListener, self.params )
 end
 
 
@@ -72,8 +48,11 @@ function DatabaseMysql:Returnusername(email)
 			self.myNewData = event.response
 			print ( "From server: " .. self.myNewData)--印出json
 			self.decodedData=self.json.decode(self.myNewData)
-			self.nickname = self.decodedData[1]["value"]
+			if(self.decodedData)then
+				self.nickname = self.decodedData[1]
+			end
 			self:save(self.nickname)
+			
 			
 		end
 	end
@@ -85,104 +64,36 @@ function DatabaseMysql:Returnusername(email)
 	self.params.headers = self.headers
 	self.params.body = self.body
 					
-	network.request( "http://140.131.12.56/username.php", "POST", networkListener2, self.params )
+	network.request( "http://trance.nctu.me/username.php", "POST", networkListener2, self.params )
 	
 end
 
-function DatabaseMysql:Register( email,password,username,age,country,gender,firstname,lastname )
+function DatabaseMysql:Register( email,password,nickname)
 	
-	local function networkListener( event )
-			if ( event.isError ) then
-		        print( "Network error: ", event.response )
-		    else
+	function networkListener( event )
+		if ( event.isError ) then
+	        print( "Network error: ", event.response )
+	    else
+	    	self.myNewData = event.response
+			print ( "Register RESPONSE: " .. self.myNewData)
+	       
+	        --self.composer.gotoScene("Scenes.Login", "fade", 400)
+    	end
+	end
+	self.headers2["Content-Type"] = "application/x-www-form-urlencoded"
+	self.headers2["Accept-Language"] = "en-US"
+	print(email , password , nickname)
+	self.body2 = "email="..email
+			
+	self.params2 = {}
+	self.params2.headers = headers2
+	self.params2.body = body2
 
-		        print ( "RESPONSE1: " .. event.response )
-
-		        self.myNewData = event.response
-			    self.decodedData=self.json.decode(self.myNewData)    
-			            
-			            
-				if(self.myNewData == "correct")then
-				--把country加到資料庫
-					local function networkListener2( event )
-						if ( event.isError ) then
-					        print( "Network error: ", event.response )
-					    else
-					    	print ( "RESPONSE2: " .. event.response )
-					    	composer.gotoScene("Home")		
-					    end
-					end
-					
-							
-					local body2 = "email="..email.."&country="..country.."&firstname="..firstname.."&lastname="..lastname.."&gender="..gender
-							
-					local params = {}
-					params.headers = headers
-					params.body = body2
-
-					network.request( "http://140.131.12.56/Register2.php", "POST", networkListener2, params )
-
-	--------------------------------------------------------------------------------------------
-							
-				else
-					--error
-					--把錯誤的值插入到errormessage
-					self:RegisterError(self.decodedData)
-				end
-	    	end
-		end
-
-				
-		self.body = "email="..email.."&password="..password.."&username="..username.."&age="..age.."&country="..country.."&gender="..gender.."&firstname="..firstname.."&lastname="..lastname
-				
-		self.params = {}
-		self.params.headers = headers
-		self.params.body = body
-
-		network.request( "http://140.131.12.56/Register.php", "POST", networkListener, params )
+	network.request( "http://140.131.12.56/test5.php", "POST", networkListener, self.params2 )
 
 end
 
-function DatabaseMysql:RegisterError( errorMsg )
 
-	local j = 1
-	for i=1,5 do
-		if(errorMsg[i] == nil) then
-				
-		else
-			table.insert(self.errormessage,j,errorMsg[i])
-			j= j+1
-		end
-	end
-			
-	function onComplete( event )
-		if ( event.action == "clicked" ) then
-			local i = event.index
-			if ( i == 1 ) then
-			  	for j=#errorMsg,1,-1 do
-					table.remove(self.errormessage,j)
-				end
-					
-			elseif ( i == 2 ) then
-			       
-			end
-		end
-	end
-			
-	print(#self.errormessage)
-	--顯示回傳錯誤訊息
-	if(#self.errormessage == 5) then
-		alert = native.showAlert( "Riddle Me There", self.errormessage[1].."\n"..self.errormessage[2].."\n"..self.errormessage[3].."\n"..self.errormessage[4].."\n"..self.errormessage[5], {"OK"}, onComplete )
-	elseif(#self.errormessage == 4) then
-		alert = native.showAlert( "Riddle Me There", self.errormessage[1].."\n"..self.errormessage[2].."\n"..self.errormessage[3].."\n"..self.errormessage[4], {"OK"}, onComplete )
-	elseif(#self.errormessage == 3) then
-		alert = native.showAlert( "Riddle Me There", self.errormessage[1].."\n"..self.errormessage[2].."\n"..self.errormessage[3], {"OK"}, onComplete )
-	elseif(#self.errormessage == 2) then
-		alert = native.showAlert( "Riddle Me There", self.errormessage[1].."\n"..self.errormessage[2], {"OK"}, onComplete )
-	elseif(#self.errormessage == 1) then
-		alert = native.showAlert( "Riddle Me There", self.errormessage[1], {"OK"}, onComplete )
-	end
-end
 
 function DatabaseMysql:save( text )
 	self.path = system.pathForFile("nickname.txt",system.DocumentsDirectory)
