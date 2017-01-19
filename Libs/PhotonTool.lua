@@ -140,14 +140,20 @@ function PhotonTool:RemoveSelf( ... )
 	-- body
 end
 
+<<<<<<< HEAD
 --photon驗證
+=======
+>>>>>>> origin/master
 function PhotonTool:SetAuthentication(username , password)
 
 	-- load AuthenticationType from LoadBalancingConstants
 	local AuthenticationType = self.LoadBalancingConstants.CustomAuthenticationType
 
 	print(username, password)
+<<<<<<< HEAD
 	
+=======
+>>>>>>> origin/master
 	self.client:setCustomAuthentication("username=".. username.."&password="..password, AuthenticationType.Custom )
 
 
@@ -170,13 +176,35 @@ function PhotonTool:GetUser()
 	
 end
 
+<<<<<<< HEAD
 --設定玩家名稱
+=======
+
+>>>>>>> origin/master
 function PhotonTool:setName(name)
 	self.client:myActor():setName(name)
 end
 
+<<<<<<< HEAD
 function PhotonTool:getId()
 	return self.client:myActor().actorNr
+=======
+---------------------------
+-- 房間運作相關 function --
+---------------------------
+function PhotonTool:GetRoomActorInfo()
+	local actorArray = {} 
+	local myRoomActors = self.client:myRoomActors()
+	
+	-- get data from photon 
+	for actorNum, actor in pairs( myRoomActors ) do
+		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"))
+		--{actor.name,actor.actorNr,actor:getCustomProperty("isReady")}
+		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"))
+	end
+
+	return actorArray 	
+>>>>>>> origin/master
 end
 ---------------------------
 -- 房間運作相關 function --
@@ -193,6 +221,7 @@ function PhotonTool:GetRoomActorInfo()
 		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"))
 	end
 
+<<<<<<< HEAD
 	return actorArray 	
 end
 
@@ -208,6 +237,16 @@ end
 
 
 --取得房間資訊
+=======
+function PhotonTool:setCustomProperty( playerstate )
+	
+	self.client:myActor():setCustomProperty("isReady", playerstate)
+	
+end
+
+
+
+>>>>>>> origin/master
 function  PhotonTool:GetRoomInfo()
 	-- Get Room
 	local room = self.client:myRoom()
@@ -222,7 +261,10 @@ end
 -- 大廳運作相關 function --
 ---------------------------
 
+<<<<<<< HEAD
 --創建房間
+=======
+>>>>>>> origin/master
 function PhotonTool:CreateRoom( roomName )
 	-- 取得創建房間設定
 	local createOptions = self.basicRoomCreateOptions
@@ -231,17 +273,26 @@ function PhotonTool:CreateRoom( roomName )
 	self.client:createRoom(roomName, createOptions)
 end
 
+<<<<<<< HEAD
 --加入房間
+=======
+>>>>>>> origin/master
 function PhotonTool:JoinRoom( RoomName )
 	self.client:joinRoom(RoomName, self.basicRoomOptions, self.basicRoomCreateOptions)
 end
 
+<<<<<<< HEAD
 --離開房間
+=======
+>>>>>>> origin/master
 function PhotonTool:LeaveRoom()
 	self.client:leaveRoom()
 end
 
+<<<<<<< HEAD
 --取得房間列表
+=======
+>>>>>>> origin/master
 function PhotonTool:GetRoomList()
 	return self.RoomList
 end

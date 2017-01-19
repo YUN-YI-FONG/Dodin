@@ -6,7 +6,10 @@ ActorSlot = class()
     ActorSlot.name = nil
     ActorSlot.score = nil
     ActorSlot.isReady = nil
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 function ActorSlot:Ctor(composer , widget)
     -- Init ActorSlot
     self.composer = composer
@@ -43,13 +46,20 @@ function ActorSlot:Ctor(composer , widget)
     self.group:insert(isReady);
 end
 
+<<<<<<< HEAD
 --設定位置
+=======
+>>>>>>> origin/master
 function ActorSlot:SetPos( pos )
     self.group.x = pos.x
     self.group.y = pos.y
 end
 
+<<<<<<< HEAD
 --顯示玩家
+=======
+
+>>>>>>> origin/master
 function ActorSlot:Show( roomActor )
     self.face:setSequence("show")
     self.name.text = roomActor.name
@@ -58,7 +68,10 @@ function ActorSlot:Show( roomActor )
 
 end
 
+<<<<<<< HEAD
 --清除所有玩家
+=======
+>>>>>>> origin/master
 function ActorSlot:Reset()
     self.face:setSequence("hide")
     self.face.x = -5; self.face.y = -118;
@@ -67,7 +80,10 @@ function ActorSlot:Reset()
     self.isReady.text = ""
 end
 
+<<<<<<< HEAD
 --移除玩家顯示
+=======
+>>>>>>> origin/master
 function ActorSlot:RemoveSelf()
     self.face = nil
     self.name = nil

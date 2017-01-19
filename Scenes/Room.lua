@@ -11,7 +11,10 @@ local scene = composer.newScene()
 local RoomInfo = {}
 local RoomActors = {}
 local ActorSlots = {}
+<<<<<<< HEAD
 --設定玩家顯示的位置
+=======
+>>>>>>> origin/master
 local SlotPos = {
 	{ x = 600 , y = 500 },
 	{ x = 950 , y = 500 },
@@ -61,9 +64,15 @@ function scene:create( event )
 
 	local StartButton = function ( self,event ) 
 		   photonTool:setCustomProperty("Ready")
+<<<<<<< HEAD
 	end
 
     local StandByButton = function ( self,event )
+=======
+		end
+
+    local StandByButton = function ( self,event ) 
+>>>>>>> origin/master
 	   photonTool:setCustomProperty(false)
 	end	
 
@@ -94,6 +103,20 @@ function scene:create( event )
 
 	StartText  =  display.newText("準備",display.contentWidth*0.64,display.contentHeight*0.86,nil,70)
 	sceneGroup:insert(StartText)
+<<<<<<< HEAD
+=======
+
+	function backgroundcount( ... )
+		-- body
+		rect1 = display.newRect( display.contentWidth*0.5, display.contentHeight*0.5, display.contentWidth, display.contentHeight )
+		rect1:setFillColor(143/255, 143/255, 143/255)
+		rect1.alpha = 0.5
+		--sceneGroup:insert(rect1)
+	end
+	function removebackgroundcount( ... )
+		display.remove(rect1)
+	end
+>>>>>>> origin/master
 	
 end
 ---------------------------------------------------------------------------------
@@ -129,15 +152,22 @@ function scene:show( event )
 				end
 			end
 			for i=1 , #RoomActors do
+<<<<<<< HEAD
 				--判斷是否都Ready
+=======
+				
+>>>>>>> origin/master
 				if(RoomActors[1].isReady == "Ready" and RoomActors[2].isReady == "Ready") then
 					--removebackgroundcount()
 					--backgroundcount()
 					countdown = countdown + 1
 					print(countdown)
 					if(countdown == 2) then
+<<<<<<< HEAD
 						--倒數5秒,true有背景
 
+=======
+>>>>>>> origin/master
 						roomPlayer:gamecountdown(5,true)
 					end
 				end
@@ -146,7 +176,11 @@ function scene:show( event )
 			
 		end
 
+<<<<<<< HEAD
 		memTimer = timer.performWithDelay( 1, showMem, 0 )
+=======
+		memTimer = timer.performWithDelay( 1000, showMem, 0 )
+>>>>>>> origin/master
 	
 	end
 	

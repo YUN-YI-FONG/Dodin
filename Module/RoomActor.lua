@@ -4,12 +4,20 @@ RoomActor = class()
 	RoomActor.Num = nil
 	RoomActor.score = nil
 	RoomActor.isReady = nil
+<<<<<<< HEAD
 	RoomActor.gamescore = nil
 function RoomActor:Ctor ( name, actorNum, isReady ,gamescore)
 	self.name = name
 	self.score = score
 	self.isReady = isReady or false
 	self.gamescore = gamescore
+=======
+	
+function RoomActor:Ctor ( name, actorNum, isReady)
+	self.name = name
+	self.score = score
+	self.isReady = isReady or false
+>>>>>>> origin/master
 end
 
 

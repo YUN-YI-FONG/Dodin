@@ -1,5 +1,9 @@
 require "Libs.RoomList"
+<<<<<<< HEAD
 
+=======
+require "Libs.PhotonTool"
+>>>>>>> origin/master
 ---------------------------------------------------------------------------------
 --
 -- Lobby.lua
@@ -8,7 +12,10 @@ require "Libs.RoomList"
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+<<<<<<< HEAD
 --宣告RoomList
+=======
+>>>>>>> origin/master
 local roomList = RoomList.new(composer , widget)
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event ) 
@@ -65,9 +72,13 @@ function scene:show( event )
 		print( "1: show event, phase did" )
 	
 		local showMem = function()
+<<<<<<< HEAD
 			--得到房間列表
 			local newRoomList = photonTool:GetRoomList()
 			--房間列表更新
+=======
+			local newRoomList = photonTool:GetRoomList()
+>>>>>>> origin/master
 			roomList:UpdateRoomList(newRoomList)
 			print("Update?")
 
@@ -85,7 +96,10 @@ function scene:hide( event )
 	if "will" == phase then
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
+<<<<<<< HEAD
 		--移除tableview
+=======
+>>>>>>> origin/master
 		roomList:RemoveTableview()
 		roomList = nil
 		

@@ -38,8 +38,13 @@ function DatabaseMysql:Ctor( composer )
 end
 
 
+<<<<<<< HEAD
 --儲存玩家名稱
 function DatabaseMysql:Saveusername(email)
+=======
+
+function DatabaseMysql:Returnusername(email)
+>>>>>>> origin/master
 
 	function networkListener2( event )
 		if ( event.isError ) then
@@ -51,7 +56,10 @@ function DatabaseMysql:Saveusername(email)
 			if(self.decodedData)then
 				self.nickname = self.decodedData[1]
 			end
+<<<<<<< HEAD
 			--儲存到手機的file
+=======
+>>>>>>> origin/master
 			self:save(self.nickname)
 			
 			
@@ -69,6 +77,34 @@ function DatabaseMysql:Saveusername(email)
 	
 end
 
+<<<<<<< HEAD
+=======
+function DatabaseMysql:Register( email,password,nickname)
+	
+	function networkListener( event )
+		if ( event.isError ) then
+	        print( "Network error: ", event.response )
+	    else
+	    	self.myNewData = event.response
+			print ( "Register RESPONSE: " .. self.myNewData)
+	       
+	        --self.composer.gotoScene("Scenes.Login", "fade", 400)
+    	end
+	end
+	self.headers2["Content-Type"] = "application/x-www-form-urlencoded"
+	self.headers2["Accept-Language"] = "en-US"
+	print(email , password , nickname)
+	self.body2 = "email="..email
+			
+	self.params2 = {}
+	self.params2.headers = headers2
+	self.params2.body = body2
+
+	network.request( "http://140.131.12.56/test5.php", "POST", networkListener, self.params2 )
+
+end
+
+>>>>>>> origin/master
 
 
 --儲存到手機的file
