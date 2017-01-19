@@ -1,47 +1,47 @@
-require "Libs.RoomList"
 
 ---------------------------------------------------------------------------------
 --
--- Lobby.lua
+-- CreateRoom.lua
 --
 ---------------------------------------------------------------------------------
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
---宣告RoomList
-local roomList = RoomList.new(composer , widget)
+
+
+
 ---------------------------------------------------------------------------------
-local returnPress = function ( self,event ) 
-    composer.gotoScene( "Scenes.MenuPage",  "fade",400 )
+local returnPress = function ( self,event )
+	local name = "golf"..math.random(1,100)
+	photonTool:CreateRoom(name)
+	
+	local username = photonTool:GetUser()
+	photonTool:setName(username)
+	
+    
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
 	local sceneGroup = self.view
-	
+
 	image = display.newImage( "Textures/LobbyBackground.png" )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
 
-	image1 = display.newImage( "Textures/RoomTitle.png" )
-	image1.x = display.contentWidth/1.75
-	image1.y = image1.height / 2  + 30
+	
 
-	image2 = display.newImage( "Textures/MainFarm.png" )
-	image2.x = display.contentWidth/1.7
-	image2.y = display.contentHeight/1.8
+	
 
-	image5 = display.newImage( "Textures/Rooms.png" )
-	image5.x = image5.width / 2 + 20
-	image5.y = display.contentHeight/3.5
+
 	
 	sceneGroup:insert( image )
-	sceneGroup:insert( image1 )
-	sceneGroup:insert( image5 )
-	sceneGroup:insert( image2 )
 	
-	
-	roomList:RoomTableView()
 ---------------------------------------------------------------------------------
+
+
+
+
+
 	local returnPress = widget.newButton
 	 { 
 		defaultFile = "Textures/returnPress.png",
@@ -56,6 +56,7 @@ function scene:create( event )
 
 end
 ---------------------------------------------------------------------------------
+
 function scene:show( event )
 	
 	local phase = event.phase
@@ -65,15 +66,10 @@ function scene:show( event )
 		print( "1: show event, phase did" )
 	
 		local showMem = function()
-			--得到房間列表
-			local newRoomList = photonTool:GetRoomList()
-			--房間列表更新
-			roomList:UpdateRoomList(newRoomList)
-			print("Update?")
-
+			
 		end
-		memTimer = timer.performWithDelay( 500, showMem, 0 )
-
+		memTimer = timer.performWithDelay( 1000, showMem, 1 )
+	
 	end
 	
 end
@@ -83,15 +79,11 @@ function scene:hide( event )
 	local phase = event.phase
 	
 	if "will" == phase then
-		-- cancel timer
-		timer.cancel( memTimer ); memTimer = nil;
-		--移除tableview
-		roomList:RemoveTableview()
-		roomList = nil
 		
 		print( "1: hide event, phase will" )
 		
-		
+		-- cancel timer
+		timer.cancel( memTimer ); memTimer = nil;
 	end
 end
 

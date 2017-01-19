@@ -1,0 +1,26 @@
+--Dodin
+
+
+
+
+
+
+
+              -->Register
+main -->Dodin -->Login -->MenuPages-->CreateRoom    -->Room --> Golf --> end -> MenuPages
+			 					   -->Lobby         -->Room --> Golf --> end -> MenuPages
+						           -->無(還沒做)    
+					
+main,oop --> cloud-app-info , PhotonTool , Classes
+Login , oop --> DatabaseMysql 
+Register , oop --> DatabaseMysql
+Lobby, oop --> RoomList
+Room , oop --> ActorSlot , RoomPlayer
+Golf , oop --> RoomPlayer , physics3
+
+
+
+class
+
+PhotonTool  -->  RoomInfo , RoomActor
+RoomList    -->  RoomInfo

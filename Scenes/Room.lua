@@ -1,3 +1,5 @@
+require "View.ActorSlot"
+require "Libs.RoomPlayer"
 -----------------------------------------------------------------------------------------
 --
 -- Room.lua
@@ -6,23 +8,35 @@
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+local RoomInfo = {}
+local RoomActors = {}
+local ActorSlots = {}
+--設定玩家顯示的位置
+local SlotPos = {
+	{ x = 600 , y = 500 },
+	{ x = 950 , y = 500 },
+	{ x = 1300 , y = 500},
+	{ x = 1650 , y = 500}
+}
+local roomPlayer = RoomPlayer.new()
+local countdown = 1
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
 		composer.gotoScene( "", "slideLeft", 800  )
-		return true
 	end
 end
 
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event ) 
+	photonTool:LeaveRoom()
     composer.gotoScene( "Scenes.Lobby", "fade", 400 )
+
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
-
 	local sceneGroup = self.view
-
+    -- Initalize Display
 	image = display.newImage( "Textures/LobbyBackground.png" )
 	image.x = display.contentCenterX
 	image.y = display.contentCenterY
@@ -39,22 +53,20 @@ function scene:create( event )
 	image3.x = display.contentWidth / 1.75 + 30
 	image3.y = image3.height / 2  + 40
 
-	image4 = display.newImage( "Textures/Room/RoomActor.png" )
-	image4.x = display.contentWidth /2 - image4.width - 20
-	image4.y = display.contentHeight/2.2
 
-	image5 = display.newImage( "Textures/Room/RoomActor.png" )
-	image5.x = display.contentWidth/2
-	image5.y = display.contentHeight/2.2
-
-	
-	sceneGroup:insert( image  )
-	sceneGroup:insert( image1 )
-	sceneGroup:insert( image2 )
-	sceneGroup:insert( image3 )
-	sceneGroup:insert( image4 )
-	sceneGroup:insert( image5 )
+	sceneGroup:insert( image  ); sceneGroup:insert( image1 );
+	sceneGroup:insert( image2 ); sceneGroup:insert( image3 );
+ 
 ---------------------------------------------------------------------------------
+
+	local StartButton = function ( self,event ) 
+		   photonTool:setCustomProperty("Ready")
+	end
+
+    local StandByButton = function ( self,event )
+	   photonTool:setCustomProperty(false)
+	end	
+
 
 	local returnPress = widget.newButton
  	{ 
@@ -68,7 +80,7 @@ function scene:create( event )
 	returnPress.x = returnPress.width / 2
 	returnPress.y = returnPress.height / 2
 
-	local StartButton = widget.newButton
+	StartButton = widget.newButton
 	{ 
 		defaultFile = "Textures/Room/StartButton.png",
 		overFile = "Textures/Room/StartButton_down.png",
@@ -80,11 +92,14 @@ function scene:create( event )
 	StartButton.x = display.contentWidth/1.7
 	StartButton.y = display.contentHeight/1.15
 
+	StartText  =  display.newText("準備",display.contentWidth*0.64,display.contentHeight*0.86,nil,70)
+	sceneGroup:insert(StartText)
+	
 end
 ---------------------------------------------------------------------------------
 
 function scene:show( event )
-	
+	local sceneGroup = self.view
 	local phase = event.phase
 	
 	if "did" == phase then
@@ -92,9 +107,46 @@ function scene:show( event )
 		 -- print( "1: show event, phase did" )
 	
 		local showMem = function()
-		--	image6:addEventListener( "touch", image6 )
+			-- 刷新房間資訊
+			RoomInfo = photonTool:GetRoomInfo()
+			if (RoomInfo.maxActors ~= 0 and next(ActorSlots) == nil) then
+				for i=1, RoomInfo.maxActors do
+					ActorSlots[i] = ActorSlot.new(composer, widget)
+					ActorSlots[i]:SetPos( SlotPos[i] )
+				end
+			end
+			-- 刷新玩家資訊
+			RoomActors = photonTool:GetRoomActorInfo()
+			if ( next(RoomActors) ~= nil and next(ActorSlots) ~= nil) then
+			-- 全部清除
+				for i=1, #ActorSlots do
+					ActorSlots[i]:Reset()
+
+				end
+			-- 重新顯示
+				for i=1, #RoomActors do
+					ActorSlots[i]:Show( RoomActors[i] )
+				end
+			end
+			for i=1 , #RoomActors do
+				--判斷是否都Ready
+				if(RoomActors[1].isReady == "Ready" and RoomActors[2].isReady == "Ready") then
+					--removebackgroundcount()
+					--backgroundcount()
+					countdown = countdown + 1
+					print(countdown)
+					if(countdown == 2) then
+						--倒數5秒,true有背景
+
+						roomPlayer:gamecountdown(5,true)
+					end
+				end
+			end
+
+			
 		end
-		memTimer = timer.performWithDelay( 1000, showMem, 1 )
+
+		memTimer = timer.performWithDelay( 1, showMem, 0 )
 	
 	end
 	
@@ -103,20 +155,25 @@ end
 function scene:hide( event )
 	
 	local phase = event.phase
-	
+
 	if "will" == phase then
-	
-		--print( "1: hide event, phase will" )
-	
-		-- remove touch listener for image
-		--image6:removeEventListener( "touch", image6 )
-		-- cancel timer
+
 		timer.cancel( memTimer ); memTimer = nil;
+		-- 釋放資源
+		for i=1, #ActorSlots do
+			ActorSlots[i]:RemoveSelf()
+		end
+		roomPlayer:removeTime()
+	end
+
+	if "did" == phase then
+
 	end
 end
 
 
 function scene:destroy( event )
+	roomPlayer:removeTime()
 	print( "((destroying scene 1's view))" )
 end
 

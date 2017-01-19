@@ -8,7 +8,7 @@ local scene = composer.newScene()
 
 function onSceneTouch( self, event )
 	if event.phase == "began" then
-		composer.gotoScene( "Scenes.MenuPage", "slideLeft", 800  )
+		composer.gotoScene( "Scenes.Login", "slideLeft", 800  )
 		return true
 	end
 end
@@ -45,9 +45,7 @@ function scene:show( event )
 	-- Update Lua memory text display
 		local showMem = function()
 			image:addEventListener( "touch", image )
-			-- text3.isVisible = true
-			--text2.text = text2.text .. collectgarbage("count")/1000 .. "MB"
-			-- text2.x = display.contentWidth * 0.5
+			
 		end
 		memTimer = timer.performWithDelay( 1000, showMem, 1 )
 	end
