@@ -61,6 +61,11 @@ settings =
 				"Icons/Icon-Small-50.png",
 				"Icons/Icon-Small-50@2x.png",
 			},
+			NSAppTransportSecurity =
+			{
+    			NSAllowsArbitraryLoads = true,
+			},
+            CFBundleIdentifier = "mobi.aame",
 		},
 	},
 	
