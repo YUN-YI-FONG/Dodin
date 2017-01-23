@@ -1,12 +1,4 @@
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
-require "Libs.PhotonTool"
->>>>>>> origin/master
->>>>>>> origin/master
 ---------------------------------------------------------------------------------
 --
 -- CreateRoom.lua
@@ -15,7 +7,6 @@ require "Libs.PhotonTool"
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
-<<<<<<< HEAD
 local group = display.newGroup()
 local pwd
 local number
@@ -24,13 +15,11 @@ local playercount
 local playercount2
 local radioButton1
 local radioButton2
+local Create
+local count 
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event )
-	local name = "golf"..math.random(1,100)
-	--photonTool:CreateRoom(name)
 	
-	local username = photonTool:GetUser()
-	--photonTool:setName(username)
 	display.remove(group)
 	display.remove(pwd)
     composer.gotoScene("Scenes.Dodin", "fade", 400)
@@ -99,6 +88,7 @@ local CreateInfo = function( ... )
 	function onSwitchPress( event )
 	    local switch = event.target
 	    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
+	    count = tonumber(switch.id)
 	end
 	radioButton1 = widget.newSwitch(
 	    {
@@ -125,20 +115,29 @@ local CreateInfo = function( ... )
 	radioButton2.width = 100
 	radioButton2.height = 100
 	group:insert( radioButton2 )
-=======
 
-
-
----------------------------------------------------------------------------------
-local returnPress = function ( self,event )
-	local name = "golf"..math.random(1,100)
-	photonTool:CreateRoom(name)
+	local Room = function( ... )
+		local name = "golf"..math.random(1,100)
+		photonTool:CreateRoom(name,count)
 	
-	local username = photonTool:GetUser()
-	photonTool:setName(username)
+		local username = photonTool:GetUser()
+		photonTool:setName(username)
+		 composer.gotoScene("Scenes.loading", "fade", 400)
+	end
+
+	Create = widget.newButton
+ 	{ 
 	
-    
->>>>>>> origin/master
+		defaultFile = "Textures/Title/login.png",
+		overFile = "Textures/Title/login0.png",
+		emboss = false,
+		onPress = Room,
+		--onRelease = button1Release,
+ 	}
+   	  	group:insert(Create)
+  	 	Create.x =display.contentWidth/1.2
+		Create.y =display.contentHeight/1.18
+
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
@@ -150,7 +149,6 @@ function scene:create( event )
 
 	
 
-<<<<<<< HEAD
 	image2 = display.newImage( "Textures/Create/Room_Football_icon.png" )
 	image2.x = display.contentWidth/3.5
 	image2.y = display.contentHeight/5
@@ -179,14 +177,6 @@ function scene:create( event )
 	image3.touch = CreateInfo
 	image4.touch = CreateInfo
 	image5.touch = CreateInfo
-=======
-	
-
-
-	
-	sceneGroup:insert( image )
-	
->>>>>>> origin/master
 ---------------------------------------------------------------------------------
 
 
@@ -217,14 +207,10 @@ function scene:show( event )
 		print( "1: show event, phase did" )
 	
 		local showMem = function()
-<<<<<<< HEAD
 			image2:addEventListener( "touch", image2 )
 			image3:addEventListener( "touch", image3 )
 			image4:addEventListener( "touch", image4 )
 			image5:addEventListener( "touch", image5 )
-=======
-			
->>>>>>> origin/master
 		end
 		memTimer = timer.performWithDelay( 1000, showMem, 1 )
 	
@@ -239,7 +225,37 @@ function scene:hide( event )
 	if "will" == phase then
 		
 		print( "1: hide event, phase will" )
-		
+		if image6 ~= nil then
+    	image6:removeSelf()
+	end
+
+	if pwd ~= nil then
+    	pwd:removeSelf()
+	end
+
+	if number ~= nil then
+    	number:removeSelf()
+	end
+
+	if pwdText ~= nil then
+    	pwdText:removeSelf()
+	end
+
+	if playercount ~= nil then
+    	playercount:removeSelf()
+	end
+
+	if playercount2 ~= nil then
+    	playercount2:removeSelf()
+	end
+
+	if radioButton1 ~= nil then
+    	radioButton1:removeSelf()
+	end
+
+	if radioButton2 ~= nil then
+    	radioButton2:removeSelf()
+	end
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
 	end
