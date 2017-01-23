@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+require "Libs.PhotonTool"
+>>>>>>> origin/master
+>>>>>>> origin/master
 ---------------------------------------------------------------------------------
 --
 -- CreateRoom.lua
@@ -7,6 +15,7 @@
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+<<<<<<< HEAD
 local group = display.newGroup()
 local pwd
 local number
@@ -116,6 +125,20 @@ local CreateInfo = function( ... )
 	radioButton2.width = 100
 	radioButton2.height = 100
 	group:insert( radioButton2 )
+=======
+
+
+
+---------------------------------------------------------------------------------
+local returnPress = function ( self,event )
+	local name = "golf"..math.random(1,100)
+	photonTool:CreateRoom(name)
+	
+	local username = photonTool:GetUser()
+	photonTool:setName(username)
+	
+    
+>>>>>>> origin/master
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
@@ -127,6 +150,7 @@ function scene:create( event )
 
 	
 
+<<<<<<< HEAD
 	image2 = display.newImage( "Textures/Create/Room_Football_icon.png" )
 	image2.x = display.contentWidth/3.5
 	image2.y = display.contentHeight/5
@@ -155,6 +179,14 @@ function scene:create( event )
 	image3.touch = CreateInfo
 	image4.touch = CreateInfo
 	image5.touch = CreateInfo
+=======
+	
+
+
+	
+	sceneGroup:insert( image )
+	
+>>>>>>> origin/master
 ---------------------------------------------------------------------------------
 
 
@@ -185,10 +217,14 @@ function scene:show( event )
 		print( "1: show event, phase did" )
 	
 		local showMem = function()
+<<<<<<< HEAD
 			image2:addEventListener( "touch", image2 )
 			image3:addEventListener( "touch", image3 )
 			image4:addEventListener( "touch", image4 )
 			image5:addEventListener( "touch", image5 )
+=======
+			
+>>>>>>> origin/master
 		end
 		memTimer = timer.performWithDelay( 1000, showMem, 1 )
 	

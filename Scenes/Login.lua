@@ -42,16 +42,36 @@ function scene:create( event )
 ------------------------------------------------------------------------------------------
 	
 	function LoginPost()
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 		
 		--呼叫photon驗證
 		photonTool:SetAuthentication(Email.text , Password.text)
 		
 		--儲存玩家名稱
 		databaseMysql:Saveusername(Email.text)
+<<<<<<< HEAD
 		--composer.gotoScene( "Scenes.loading", "fade", 400 )
 
 		local username = function()
 			--從手機file讀出名稱
+=======
+		
+
+		local username = function()
+			--從手機file讀出名稱
+=======
+
+		photonTool:SetAuthentication(Email.text , Password.text)
+		photonTool:Connect()
+		
+		databaseMysql:Returnusername(Email.text)
+		
+		local username = function()
+>>>>>>> origin/master
+>>>>>>> origin/master
 			name = databaseMysql:read("nickname.txt")
 			
 			if(name) then

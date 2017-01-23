@@ -20,7 +20,11 @@ composer.recycleOnSceneChange = true -- Automatically remove scenes from memory
 photonTool:Create()
 playernameTimer =nil
 name = nil
+<<<<<<< HEAD
 playerinfoTimer = nil
+=======
+
+>>>>>>> origin/master
 -- To Title scene.
 composer.gotoScene( "Scenes.Dodin", frad,400)
 
