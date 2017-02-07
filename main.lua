@@ -1,4 +1,5 @@
 require "Libs.PhotonTool"
+require "Libs.Classes"
 -----------------------------------------------------------------------------------------
 -- main.lua
 -----------------------------------------------------------------------------------------
@@ -17,8 +18,14 @@ composer.recycleOnSceneChange = true -- Automatically remove scenes from memory
 
 -- Create and link peer .
 photonTool:Create()
-photonTool:Connect()
-
+playernameTimer =nil
+name = nil
+playerinfoTimer = nil
 -- To Title scene.
 composer.gotoScene( "Scenes.Dodin", frad,400)
+
+
+
+
+
 	

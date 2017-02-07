@@ -9,11 +9,11 @@ local scene = composer.newScene()
 
 ---------------------------------------------------------------------------------
 local CreateRoom = function ( self,event ) 
-    composer.gotoScene( "CreateRoom", "fade", 400 )
+    composer.gotoScene( "Scenes.CreateRoom", "fade", 400 )
 end
 
 local JoinLobby = function ( self,event ) 
-    composer.gotoScene( "Scenes.Lobby", "fade", 400 )
+    composer.gotoScene( "Scenes.Lobby",  "fade",400)
 end
 
 local FastJoin = function ( self,event ) 
@@ -66,7 +66,14 @@ function scene:create( event )
 	sceneGroup:insert( image1)	image1.touch = JoinLobby
 	sceneGroup:insert( image2)	image2.touch = nil
 	sceneGroup:insert( image3)	image3.touch = nil
+
+
 ---------------------------------------------------------------------------------
+	
+
+
+
+
 	local CreateRoom = widget.newButton
 	 { 
 		defaultFile = "Textures/Menu/CreateRoom.png",
@@ -111,9 +118,12 @@ end
 function scene:show( event )
 	
 	local phase = event.phase
-	
+	composer.removeScene("Scenes.Login")
 	if "did" == phase then
-	
+		--[[if(name ~= "")then
+			photonTool:SetUser(name)
+		end
+		timer.cancel(playernameTimer)]]
 		-- print( "1: show event, phase did" )
 	
 		local showMem = function()
@@ -144,6 +154,7 @@ function scene:hide( event )
 
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
+		timer.cancel(playernameTimer)
 	end
 end
 
