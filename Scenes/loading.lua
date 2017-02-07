@@ -8,7 +8,11 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 	display.setDefault( "background", 0, 0, 0 )
+<<<<<<< HEAD
 	local test = display.newText("Loading ...",display.contentCenterX,display.contentCenterY,nil,80)
+=======
+	local test = display.newText("Loading ~~",display.contentCenterX,display.contentCenterY,nil,80)
+>>>>>>> origin/master
 		sceneGroup:insert( test )	
 	end
 function scene:show( event )

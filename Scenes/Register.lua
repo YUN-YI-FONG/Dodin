@@ -59,7 +59,30 @@ function scene:create( event )
 		sceneGroup:insert(Lastname)
 ------------------------------------------------------------------------------------------
 	local Registerbut = function ( self,event )
+<<<<<<< HEAD
 		
+=======
+		--[[if(Password.text and ConfirnPassword.text) then
+			if(Password.text == ConfirnPassword.text) then 
+	    		databaseMysql:Register(Email.text,Password.text,Username.text)
+	    	else
+	    		function onComplete( event )
+				    if ( event.action == "clicked" ) then
+				    	
+				        local i = event.index
+				        
+				        if ( i == 1 ) then
+				          
+						
+				        elseif ( i == 2 ) then
+				           
+				        end
+				    end
+				end
+				alert = native.showAlert( "Dodin", "確認密碼與原密碼不符.", {"OK"}, onComplete )
+	    	end
+	    end]]
+>>>>>>> origin/master
 	    function networkListener( event )
 			if ( event.isError ) then
 		        print( "Network error: ", event.response )

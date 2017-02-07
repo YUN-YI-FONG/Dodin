@@ -120,10 +120,17 @@ function scene:show( event )
 	local phase = event.phase
 	composer.removeScene("Scenes.Login")
 	if "did" == phase then
+<<<<<<< HEAD
 		--[[if(name ~= "")then
 			photonTool:SetUser(name)
 		end
 		timer.cancel(playernameTimer)]]
+=======
+		if(name ~= "")then
+			photonTool:SetUser(name)
+		end
+		timer.cancel(playernameTimer)
+>>>>>>> origin/master
 		-- print( "1: show event, phase did" )
 	
 		local showMem = function()

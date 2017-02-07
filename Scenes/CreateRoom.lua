@@ -59,10 +59,13 @@ local CreateInfo = function( ... )
     	radioButton2:removeSelf()
 	end
 
+<<<<<<< HEAD
 	if Create ~= nil then
     	Create:removeSelf()
 	end
 
+=======
+>>>>>>> origin/master
 	group = display.newGroup()
 	image6 = display.newImage( "Textures/Title/native1.png" )
 	image6.x = display.contentWidth/1.8
@@ -260,10 +263,13 @@ function scene:hide( event )
 	if radioButton2 ~= nil then
     	radioButton2:removeSelf()
 	end
+<<<<<<< HEAD
 
 	if Create ~= nil then
     	Create:removeSelf()
 	end
+=======
+>>>>>>> origin/master
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
 	end

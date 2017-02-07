@@ -23,6 +23,10 @@ Golf , oop --> RoomPlayer , physics3
 class
 
 PhotonTool  -->  RoomInfo , RoomActor
+<<<<<<< HEAD
 RoomList    -->  RoomInfo
 
 
+=======
+RoomList    -->  RoomInfo
+>>>>>>> origin/master

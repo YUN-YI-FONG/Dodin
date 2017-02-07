@@ -62,7 +62,11 @@ function ScoreView:Create()
 	        left = -200,
 	        top = 200,
 	        id = "button1",
+<<<<<<< HEAD
 	        label = "Return Menu",
+=======
+	        label = "ReturnMenu",
+>>>>>>> origin/master
 	        onEvent = ReturnMenu,
 	        fontSize = 100,
 	        labelColor = { default={ 1, 1, 1 }},
