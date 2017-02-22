@@ -6,18 +6,7 @@ ActorSlot = class()
     ActorSlot.name = nil
     ActorSlot.score = nil
     ActorSlot.isReady = nil
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function ActorSlot:Ctor(composer , widget)
     -- Init ActorSlot
     self.composer = composer
@@ -46,44 +35,24 @@ function ActorSlot:Ctor(composer , widget)
     local isReady = display.newText( "" , 0, 240, nil , 40)
     isReady:setFillColor( 255/255, 0/255, 0/255 )
 
+
+
     self.face = face;   self.name = name;
     self.score = score; self.isReady = isReady;
+
 
     self.group:insert(bg);   self.group:insert(face);
     self.group:insert(name); self.group:insert(score);
     self.group:insert(isReady);
 end
 
-<<<<<<< HEAD
 --設定位置
-=======
-<<<<<<< HEAD
---設定位置
-=======
-<<<<<<< HEAD
---設定位置
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function ActorSlot:SetPos( pos )
     self.group.x = pos.x
     self.group.y = pos.y
 end
 
-<<<<<<< HEAD
 --顯示玩家
-=======
-<<<<<<< HEAD
---顯示玩家
-=======
-<<<<<<< HEAD
---顯示玩家
-=======
-
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function ActorSlot:Show( roomActor )
     self.face:setSequence("show")
     self.name.text = roomActor.name
@@ -92,38 +61,17 @@ function ActorSlot:Show( roomActor )
 
 end
 
-<<<<<<< HEAD
 --清除所有玩家
-=======
-<<<<<<< HEAD
---清除所有玩家
-=======
-<<<<<<< HEAD
---清除所有玩家
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function ActorSlot:Reset()
     self.face:setSequence("hide")
     self.face.x = -5; self.face.y = -118;
     self.name.text = ""
     self.score.text = ""
     self.isReady.text = ""
+
 end
 
-<<<<<<< HEAD
 --移除玩家顯示
-=======
-<<<<<<< HEAD
---移除玩家顯示
-=======
-<<<<<<< HEAD
---移除玩家顯示
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function ActorSlot:RemoveSelf()
     self.face = nil
     self.name = nil

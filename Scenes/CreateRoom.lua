@@ -8,13 +8,15 @@ local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
 local group = display.newGroup()
+local group2 = display.newGroup()
+local level
 local pwd
 local number
+local leveltext,leveltext2,leveltext3
 local pwdText 
-local playercount
-local playercount2
-local radioButton1
-local radioButton2
+local levelButton1,levelButton2,levelButton2
+local playercount,playercount2
+local radioButton1,radioButton2
 local Create
 local count 
 ---------------------------------------------------------------------------------
@@ -22,10 +24,11 @@ local returnPress = function ( self,event )
 	
 	display.remove(group)
 	display.remove(pwd)
-    composer.gotoScene("Scenes.Dodin", "fade", 400)
+    composer.gotoScene("Scenes.MenuPage", "fade", 400)
 end
 
-local CreateInfo = function( ... )
+
+function removeCreate( ... )
 	
 	if image6 ~= nil then
     	image6:removeSelf()
@@ -35,8 +38,24 @@ local CreateInfo = function( ... )
     	pwd:removeSelf()
 	end
 
+	if level ~= nil then
+		level:removeSelf()
+	end
+
 	if number ~= nil then
     	number:removeSelf()
+	end
+
+	if leveltext ~= nil then
+    	leveltext:removeSelf()
+	end
+
+	if leveltext2 ~= nil then
+    	leveltext2:removeSelf()
+	end
+
+	if leveltext3 ~= nil then
+    	leveltext3:removeSelf()
 	end
 
 	if pwdText ~= nil then
@@ -51,6 +70,18 @@ local CreateInfo = function( ... )
     	playercount2:removeSelf()
 	end
 
+	if levelButton1 ~= nil then
+    	levelButton1:removeSelf()
+	end
+
+	if levelButton2 ~= nil then
+    	levelButton2:removeSelf()
+	end
+
+	if levelButton3 ~= nil then
+    	levelButton3:removeSelf()
+	end
+
 	if radioButton1 ~= nil then
     	radioButton1:removeSelf()
 	end
@@ -59,38 +90,102 @@ local CreateInfo = function( ... )
     	radioButton2:removeSelf()
 	end
 
-<<<<<<< HEAD
 	if Create ~= nil then
     	Create:removeSelf()
 	end
 
-=======
->>>>>>> origin/master
+end
+local CreateInfo = function( ... )
+	
+	removeCreate()
+
 	group = display.newGroup()
 	image6 = display.newImage( "Textures/Title/native1.png" )
 	image6.x = display.contentWidth/1.8
-	image6.y = display.contentHeight/2
+	image6.y = display.contentHeight/1.7
 
-	pwd = display.newText("密碼 : ", display.contentWidth/3.5,display.contentHeight/2,nil,80)
+	pwd = display.newText("密碼 : ", display.contentWidth/3.5,display.contentHeight/1.7,nil,80)
 	pwd:setTextColor(  0, 0, 0  )
 	group:insert(pwd)
 
 
-	number = display.newText("人數 : ", display.contentWidth/3.5,display.contentHeight/1.5,nil,80)
+	number = display.newText("人數 : ", display.contentWidth/3.5,display.contentHeight/1.3,nil,80)
 	number:setTextColor(  0, 0, 0  )
+	group:insert(number)
 
+	level = display.newText("難度 : ",display.contentWidth/3.5,display.contentHeight/2.5,nil,80)
+	level:setTextColor(  0, 0, 0  )
+	group:insert(level)
 
-	pwdText = native.newTextField( display.contentWidth/1.8,display.contentHeight/2, 500, 60)
+	leveltext = display.newText("初級",display.contentWidth/1.88,display.contentHeight/2.5,nil,80)
+	leveltext:setTextColor(  0, 0, 0  )
+	group2:insert(leveltext)
+
+	leveltext2 = display.newText("中級",display.contentWidth/1.45,display.contentHeight/2.5,nil,80)
+	leveltext2:setTextColor(  0, 0, 0  )
+	group2:insert(leveltext2)
+
+	leveltext3 = display.newText("高級",display.contentWidth/1.19,display.contentHeight/2.5,nil,80)
+	leveltext3:setTextColor(  0, 0, 0  )
+	group2:insert(leveltext3)
+
+	pwdText = native.newTextField( display.contentWidth/1.8,display.contentHeight/1.7, 500, 60)
 
 	group:insert(pwdText)
 
 
-	playercount = display.newText("2 人", display.contentWidth/1.88,display.contentHeight/1.49,nil,80)
+	playercount = display.newText("2 人", display.contentWidth/1.88,display.contentHeight/1.28,nil,80)
 	playercount:setTextColor(  0, 0, 0  )
 
-	playercount2 = display.newText("4 人", display.contentWidth/1.45,display.contentHeight/1.49,nil,80)
+	playercount2 = display.newText("4 人", display.contentWidth/1.45,display.contentHeight/1.28,nil,80)
 	playercount2:setTextColor(  0, 0, 0  )
 
+	function levelPress( event )
+	    local switch = event.target
+	    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
+	   	gamelevel = switch.id
+	end
+
+	--widget.newSwitch要把不同的類型的放在不同的group
+	--要是放在相同的group會導致只有一個按鈕會被選到
+	levelButton1 = widget.newSwitch(
+	    {
+	        left = 850,
+	        top = 420,
+	        style = "radio",
+	        id = "初級",
+	        onPress = levelPress
+	    }
+	)
+	levelButton1.width = 100
+	levelButton1.height = 100
+	group2:insert( levelButton1 )
+
+	levelButton2 = widget.newSwitch(
+	    {
+	        left = 1150,
+	        top = 420,
+	        style = "radio",
+	        id = "中級",
+	        onPress = levelPress
+	    }
+	)
+	levelButton2.width = 100
+	levelButton2.height = 100
+	group2:insert( levelButton2 )
+
+	levelButton3 = widget.newSwitch(
+	    {
+	        left = 1450,
+	        top = 420,
+	        style = "radio",
+	        id = "高級",
+	        onPress = levelPress
+	    }
+	)
+	levelButton3.width = 100
+	levelButton3.height = 100
+	group2:insert( levelButton3 )
 
 	function onSwitchPress( event )
 	    local switch = event.target
@@ -100,7 +195,7 @@ local CreateInfo = function( ... )
 	radioButton1 = widget.newSwitch(
 	    {
 	        left = 850,
-	        top = 710,
+	        top = 830,
 	        style = "radio",
 	        id = "2",
 	        onPress = onSwitchPress
@@ -113,7 +208,7 @@ local CreateInfo = function( ... )
 	radioButton2 = widget.newSwitch(
 	    {
 	        left = 1150,
-	        top = 710,
+	        top = 830,
 	        style = "radio",
 	        id = "4",
 	        onPress = onSwitchPress
@@ -129,6 +224,8 @@ local CreateInfo = function( ... )
 	
 		local username = photonTool:GetUser()
 		photonTool:setName(username)
+		--設定遊戲的難度
+		photonTool:setCustomProperty(false,false,false,gamelevel)
 		 composer.gotoScene("Scenes.loading", "fade", 400)
 	end
 
@@ -236,40 +333,7 @@ function scene:hide( event )
     	image6:removeSelf()
 	end
 
-	if pwd ~= nil then
-    	pwd:removeSelf()
-	end
-
-	if number ~= nil then
-    	number:removeSelf()
-	end
-
-	if pwdText ~= nil then
-    	pwdText:removeSelf()
-	end
-
-	if playercount ~= nil then
-    	playercount:removeSelf()
-	end
-
-	if playercount2 ~= nil then
-    	playercount2:removeSelf()
-	end
-
-	if radioButton1 ~= nil then
-    	radioButton1:removeSelf()
-	end
-
-	if radioButton2 ~= nil then
-    	radioButton2:removeSelf()
-	end
-<<<<<<< HEAD
-
-	if Create ~= nil then
-    	Create:removeSelf()
-	end
-=======
->>>>>>> origin/master
+	removeCreate()
 		-- cancel timer
 		timer.cancel( memTimer ); memTimer = nil;
 	end

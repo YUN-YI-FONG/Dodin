@@ -68,6 +68,21 @@ function scene:create( event )
 	sceneGroup:insert( image3)	image3.touch = nil
 
 
+
+	CreateroomText = display.newText("創建房間",0,0,native.systemFontBold,80)
+	CreateroomText.x = display.contentWidth/6
+	CreateroomText.y = display.contentHeight/2.5
+	CreateroomText:setTextColor( 0.3, 0.3, 0.3 )
+
+	JoinroomText = display.newText("加入房間",0,0,native.systemFontBold,80)
+	JoinroomText.x = display.contentWidth/2
+	JoinroomText.y = display.contentHeight/2.5
+	JoinroomText:setTextColor( 1, 0.5, 0 )
+
+	FastJoinText = display.newText("快速加入",0,0,native.systemFontBold,80)
+	FastJoinText.x = display.contentWidth/1.2
+	FastJoinText.y = display.contentHeight/2.5
+	FastJoinText:setTextColor( 0, 0, 0.9 )
 ---------------------------------------------------------------------------------
 	
 
@@ -112,6 +127,9 @@ function scene:create( event )
 	FastJoin.y =display.contentHeight/2.5
 
 
+ 	sceneGroup:insert(CreateroomText)
+ 	sceneGroup:insert(JoinroomText)
+ 	sceneGroup:insert(FastJoinText)
 end
 ---------------------------------------------------------------------------------
 
@@ -120,17 +138,10 @@ function scene:show( event )
 	local phase = event.phase
 	composer.removeScene("Scenes.Login")
 	if "did" == phase then
-<<<<<<< HEAD
 		--[[if(name ~= "")then
 			photonTool:SetUser(name)
 		end
 		timer.cancel(playernameTimer)]]
-=======
-		if(name ~= "")then
-			photonTool:SetUser(name)
-		end
-		timer.cancel(playernameTimer)
->>>>>>> origin/master
 		-- print( "1: show event, phase did" )
 	
 		local showMem = function()

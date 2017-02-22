@@ -11,18 +11,7 @@ local scene = composer.newScene()
 local RoomInfo = {}
 local RoomActors = {}
 local ActorSlots = {}
-<<<<<<< HEAD
 --設定玩家顯示的位置
-=======
-<<<<<<< HEAD
---設定玩家顯示的位置
-=======
-<<<<<<< HEAD
---設定玩家顯示的位置
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 local SlotPos = {
 	{ x = 600 , y = 500 },
 	{ x = 950 , y = 500 },
@@ -30,15 +19,7 @@ local SlotPos = {
 	{ x = 1650 , y = 500}
 }
 local roomPlayer = RoomPlayer.new()
-<<<<<<< HEAD
 local isCountDown = false
-=======
-<<<<<<< HEAD
-local isCountDown = false
-=======
-local countdown = 1
->>>>>>> origin/master
->>>>>>> origin/master
 ---------------------------------------------------------------------------------
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
@@ -48,34 +29,16 @@ end
 
 ---------------------------------------------------------------------------------
 local returnPress = function ( self,event ) 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
 	timer.cancel(playerinfoTimer)
 	photonTool:LeaveRoom()
 
     composer.gotoScene( "Scenes.MenuPage", "fade", 400 )
-<<<<<<< HEAD
-=======
-=======
-	photonTool:LeaveRoom()
-    composer.gotoScene( "Scenes.Lobby", "fade", 400 )
->>>>>>> origin/master
->>>>>>> origin/master
 
 end
 ---------------------------------------------------------------------------------
 function scene:create( event )
 	local sceneGroup = self.view
-<<<<<<< HEAD
 	countdown = 1
-=======
-<<<<<<< HEAD
-	countdown = 1
-=======
->>>>>>> origin/master
->>>>>>> origin/master
     -- Initalize Display
 	image = display.newImage( "Textures/LobbyBackground.png" )
 	image.x = display.contentCenterX
@@ -100,29 +63,10 @@ function scene:create( event )
 ---------------------------------------------------------------------------------
 
 	local StartButton = function ( self,event ) 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
 		   photonTool:setCustomProperty("Ready",0,"Start")
 	end
 
     local StandByButton = function ( self,event )
-<<<<<<< HEAD
-=======
-=======
-		   photonTool:setCustomProperty("Ready")
-<<<<<<< HEAD
-	end
-
-    local StandByButton = function ( self,event )
-=======
-		end
-
-    local StandByButton = function ( self,event ) 
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 	   photonTool:setCustomProperty(false)
 	end	
 
@@ -153,26 +97,6 @@ function scene:create( event )
 
 	StartText  =  display.newText("準備",display.contentWidth*0.64,display.contentHeight*0.86,nil,70)
 	sceneGroup:insert(StartText)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
-	function backgroundcount( ... )
-		-- body
-		rect1 = display.newRect( display.contentWidth*0.5, display.contentHeight*0.5, display.contentWidth, display.contentHeight )
-		rect1:setFillColor(143/255, 143/255, 143/255)
-		rect1.alpha = 0.5
-		--sceneGroup:insert(rect1)
-	end
-	function removebackgroundcount( ... )
-		display.remove(rect1)
-	end
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 	
 end
 ---------------------------------------------------------------------------------
@@ -187,6 +111,7 @@ function scene:show( event )
 	
 		local showMem = function()
 			-- 刷新房間資訊
+
 			RoomInfo = photonTool:GetRoomInfo()
 			if (RoomInfo.maxActors ~= 0 and next(ActorSlots) == nil) then
 				for i=1, RoomInfo.maxActors do
@@ -196,31 +121,20 @@ function scene:show( event )
 			end
 			-- 刷新玩家資訊
 			RoomActors = photonTool:GetRoomActorInfo()
+			photonTool:setCustomProperty(false,false,false,RoomActors[1].level)
+
 			if ( next(RoomActors) ~= nil and next(ActorSlots) ~= nil) then
-<<<<<<< HEAD
 				-- 全部清除
-=======
-			-- 全部清除
->>>>>>> origin/master
 				for i=1, #ActorSlots do
 					ActorSlots[i]:Reset()
 
 				end
-<<<<<<< HEAD
 				-- 重新顯示
-=======
-			-- 重新顯示
->>>>>>> origin/master
 				for i=1, #RoomActors do
 					ActorSlots[i]:Show( RoomActors[i] )
 				end
 			end
-<<<<<<< HEAD
 			-- 判斷角色準備狀態
-=======
-<<<<<<< HEAD
-		-- 判斷角色準備狀態
->>>>>>> origin/master
 			if (#RoomActors > 1 and isCountDown == false) then
 				local countDown = 0
 				for i=1 , #RoomActors do
@@ -236,47 +150,9 @@ function scene:show( event )
 				end
 			end
 			
-<<<<<<< HEAD
 		end
 
 		playerinfoTimer = timer.performWithDelay( 1, showMem, 0 )
-=======
-		end
-
-		playerinfoTimer = timer.performWithDelay( 1, showMem, 0 )
-=======
-			for i=1 , #RoomActors do
-<<<<<<< HEAD
-				--判斷是否都Ready
-=======
-				
->>>>>>> origin/master
-				if(RoomActors[1].isReady == "Ready" and RoomActors[2].isReady == "Ready") then
-					--removebackgroundcount()
-					--backgroundcount()
-					countdown = countdown + 1
-					print(countdown)
-					if(countdown == 2) then
-<<<<<<< HEAD
-						--倒數5秒,true有背景
-
-=======
->>>>>>> origin/master
-						roomPlayer:gamecountdown(5,true)
-					end
-				end
-			end
-
-			
-		end
-
-<<<<<<< HEAD
-		memTimer = timer.performWithDelay( 1, showMem, 0 )
-=======
-		memTimer = timer.performWithDelay( 1000, showMem, 0 )
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 	
 	end
 	
@@ -288,32 +164,14 @@ function scene:hide( event )
 
 	if "will" == phase then
 
-<<<<<<< HEAD
 		timer.cancel( playerinfoTimer ); playerinfoTimer = nil;
-=======
-<<<<<<< HEAD
-		timer.cancel( playerinfoTimer ); playerinfoTimer = nil;
-=======
-		timer.cancel( memTimer ); memTimer = nil;
->>>>>>> origin/master
->>>>>>> origin/master
 		-- 釋放資源
 		for i=1, #ActorSlots do
 			ActorSlots[i]:RemoveSelf()
 		end
-<<<<<<< HEAD
 		if(isCountDown)then
 			roomPlayer:removeTime()
 		end
-=======
-<<<<<<< HEAD
-		if(isCountDown)then
-			roomPlayer:removeTime()
-		end
-=======
-		roomPlayer:removeTime()
->>>>>>> origin/master
->>>>>>> origin/master
 	end
 
 	if "did" == phase then
@@ -323,19 +181,9 @@ end
 
 
 function scene:destroy( event )
-<<<<<<< HEAD
 	if(isCountDown)then
 		roomPlayer:removeTime()
 	end
-=======
-<<<<<<< HEAD
-	if(isCountDown)then
-		roomPlayer:removeTime()
-	end
-=======
-	roomPlayer:removeTime()
->>>>>>> origin/master
->>>>>>> origin/master
 	print( "((destroying scene 1's view))" )
 end
 

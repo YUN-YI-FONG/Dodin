@@ -95,17 +95,7 @@ function RoomList:RoomTableView(...)
         print("測試")
         photonTool:setName(username)
         photonTool:JoinRoom(self.RoomInfoList[rowIndex].name)
-<<<<<<< HEAD
         self.composer.gotoScene( "Scenes.loading",  "fade",400 )
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-        photonTool:setCustomProperty("notReady")
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
         print("joinroom:".. self.RoomInfoList[rowIndex].name)
         
 
@@ -142,22 +132,6 @@ function RoomList:RoomTableView(...)
     end
 end
 
-function RoomList:UpdateRoomList( rooms )
-    self.TableView:deleteAllRows()
-    self.RoomInfoList = rooms
-    for i = 1 , #rooms do
-        self.rowColor = {default={1,1,1,0}}
-        self.lineColor = { 0.5, 0.5, 0.5 }
-        
-        
-        self.params.isCategory= false
-        self.params.rowHeight = 230
-        self.params.rowColor = self.rowColor
-        
-        self.TableView:insertRow(self.params)
-
-    end
-end
 
 --更新房間列表
 function RoomList:UpdateRoomList( rooms )
@@ -174,42 +148,6 @@ function RoomList:UpdateRoomList( rooms )
         
         self.TableView:insertRow(self.params)
 
-<<<<<<< HEAD
---更新房間列表
-function RoomList:UpdateRoomList( rooms )
-    self.TableView:deleteAllRows()
-    self.RoomInfoList = rooms
-    for i = 1 , #rooms do
-        self.rowColor = {default={1,1,1,0}}
-        self.lineColor = { 0.5, 0.5, 0.5 }
-        
-        
-        self.params.isCategory= false
-        self.params.rowHeight = 230
-        self.params.rowColor = self.rowColor
-        
-        self.TableView:insertRow(self.params)
-
-<<<<<<< HEAD
---更新房間列表
-function RoomList:UpdateRoomList( rooms )
-    self.TableView:deleteAllRows()
-    self.RoomInfoList = rooms
-    for i = 1 , #rooms do
-        self.rowColor = {default={1,1,1,0}}
-        self.lineColor = { 0.5, 0.5, 0.5 }
-        
-        
-        self.params.isCategory= false
-        self.params.rowHeight = 230
-        self.params.rowColor = self.rowColor
-        
-        self.TableView:insertRow(self.params)
-
-=======
-=======
->>>>>>> origin/master
->>>>>>> origin/master
     end
 end
 

@@ -20,30 +20,14 @@ PhotonTool = class()
 	PhotonTool.CONNECTED = "Connected"
 	PhotonTool.DISCONNECTED = "Disconnected"
 	PhotonTool.errorconnect = nil
+	PhotonTool.one = nil
 	----- /STATES -----
 	PhotonTool.state = PhotonTool.INITIALIZED
 	PhotonTool.END_CONNECTION_CODE = 100 -- TODO: get rid of this
 	PhotonTool.ENDCONNECTION = false
 	
-<<<<<<< HEAD
 	--創建房間的設定
 	PhotonTool.basicRoomCreateOptions= {
-=======
-<<<<<<< HEAD
-	--創建房間的設定
-	PhotonTool.basicRoomCreateOptions= {
-=======
-
-	PhotonTool.basicRoomCreateOptions= {
-		maxPlayers = 2,
-
-		customGameProperties = { 
-			gameType = 1 , 
-			creator = "nil"
-		
-		}
->>>>>>> origin/master
->>>>>>> origin/master
 
 	}
 
@@ -87,11 +71,7 @@ function PhotonTool:Create(...)
 		-- body
 		print ("onEvent code:" , code , "content:", content, "actNum:", actNum)
 	end
-<<<<<<< HEAD
 --61~71 不變
-=======
-
->>>>>>> origin/master
 	--房間列表
 	function client:onRoomList( rooms )
 		local creator, gamemode, roomInfo
@@ -110,11 +90,7 @@ function PhotonTool:Create(...)
 		tool.RoomList = roomArray
 
 	end
-<<<<<<< HEAD
 --92~96
-=======
-
->>>>>>> origin/master
 	function client:onRoomListUpdate(rooms, roomsUpdated, roomsAdded, roomsRemoved)
 		-- body
 		self:onRoomList(rooms)
@@ -125,7 +101,6 @@ function PhotonTool:Create(...)
 		-- body
 		print("State:", state , tostring(tool.LoadBalancingClient.StateToName(state)))
 		
-<<<<<<< HEAD
 	--登入時會跑一長串,必須跑完能創建房間或是加入房間,因此在這邊做判斷在在登入時以及創建和加入房間跑完一長串才進行到下一個頁面
 	--這邊會需要5~10秒，依網路速度而定
 	--102~108必須自己登入
@@ -141,6 +116,7 @@ function PhotonTool:Create(...)
 
 		--判斷是否有網路
 		if(tostring(tool.LoadBalancingClient.StateToName(state)) == "Error")then
+			self.one = true
 			self.errorconnect = "error"
 			local function onComplete( event )
 			    if ( event.action == "clicked" ) then
@@ -153,22 +129,13 @@ function PhotonTool:Create(...)
 			end
   
 			--彈跳視窗
-			local alert = native.showAlert( "Dodin", "Network error !!", { "OK"}, onComplete )
+			if(self.one) then
+				local alert = native.showAlert( "Dodin", "Network error !!", { "OK"}, onComplete )
+				self.one = false
+			end
 			
 			print(self.errorconnect)
 		end
-=======
-<<<<<<< HEAD
-		--登入時會跑一長串,必須跑完能創建房間或是加入房間,因此在這邊做判斷在在登入時以及創建和加入房間跑完一長串才進行到下一個頁面
-=======
->>>>>>> origin/master
-		if(tostring(tool.LoadBalancingClient.StateToName(state)) == "JoinedLobby")then
-			composer.gotoScene("Scenes.MenuPage", "fade", 400)
-		end
-		if(tostring(tool.LoadBalancingClient.StateToName(state)) == "Joined")then
-			composer.gotoScene( "Scenes.Room",  "fade",400 )
-		end
->>>>>>> origin/master
 	end
 
 	self.client = client
@@ -181,27 +148,19 @@ end
 function PhotonTool:Connect()
 	
 		self.client.logger:info("Start")
-<<<<<<< HEAD
 		
 		
 		print(self.errorconnect)
 		
 		self.client:connect()
-=======
-		self.client:connectToRegionMaster("kr")
->>>>>>> origin/master
 		self.runTimes = 0
 		self.timerTable = timer.performWithDelay( 1000, self, 0 ) -- test table can be used to cancel timer
 		self.state = self.CONNECTING
 		
-<<<<<<< HEAD
 		
 		
 		
 	
-=======
-	end
->>>>>>> origin/master
 end
 
 function PhotonTool:Disconnect()
@@ -214,36 +173,14 @@ function PhotonTool:RemoveSelf( ... )
 	--什麼時候需要加程式狀態在此列?
 end
 
-<<<<<<< HEAD
 --photon驗證
-=======
-<<<<<<< HEAD
---photon驗證
-=======
-<<<<<<< HEAD
---photon驗證
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:SetAuthentication(username , password)
 
 	-- load AuthenticationType from LoadBalancingConstants
 	local AuthenticationType = self.LoadBalancingConstants.CustomAuthenticationType
 
 	print(username, password)
-<<<<<<< HEAD
 	
-=======
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 	self.client:setCustomAuthentication("username=".. username.."&password="..password, AuthenticationType.Custom )
 
 
@@ -269,27 +206,11 @@ function PhotonTool:GetUser()
 	
 end
 
-<<<<<<< HEAD
 --設定玩家名稱
-=======
-<<<<<<< HEAD
---設定玩家名稱
-=======
-<<<<<<< HEAD
---設定玩家名稱
-=======
-
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:setName(name)
 	self.client:myActor():setName(name)
 end
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
 --取得房間內的ID
 function PhotonTool:getId()
 	return self.client:myActor().actorNr
@@ -298,154 +219,40 @@ end
 -- 房間運作相關 function --
 ---------------------------
 --取得玩家資訊
-<<<<<<< HEAD
-=======
-=======
-<<<<<<< HEAD
-function PhotonTool:getId()
-	return self.client:myActor().actorNr
-=======
----------------------------
--- 房間運作相關 function --
----------------------------
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:GetRoomActorInfo()
 	local actorArray = {} 
 	local myRoomActors = self.client:myRoomActors()
 	
 	-- get data from photon 
 	for actorNum, actor in pairs( myRoomActors ) do
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
-		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"),actor:getCustomProperty("gamestate"))
+		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"),actor:getCustomProperty("gamestate"),actor:getCustomProperty("level"))
 		--{actor.name,actor.actorNr,actor:getCustomProperty("isReady")}
-		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"),actor:getCustomProperty("gamestate"))
+		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"),actor:getCustomProperty("gamestate"),actor:getCustomProperty("level"))
 	end
 
 	return actorArray 	
 end
 
 --設定遊戲房間內自定義的變數
-function PhotonTool:setCustomProperty( playerstate,gamescore,gamestate )
-<<<<<<< HEAD
-=======
-=======
-		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"))
-		--{actor.name,actor.actorNr,actor:getCustomProperty("isReady")}
-		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"))
-	end
-
-	return actorArray 	
->>>>>>> origin/master
-end
----------------------------
--- 房間運作相關 function --
----------------------------
---取得玩家資訊
-function PhotonTool:GetRoomActorInfo()
-	local actorArray = {} 
-	local myRoomActors = self.client:myRoomActors()
-	
-	-- get data from photon 
-	for actorNum, actor in pairs( myRoomActors ) do
-		actorArray[#actorArray + 1] = RoomActor.new(actor.name , actor.Nr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"))
-		--{actor.name,actor.actorNr,actor:getCustomProperty("isReady")}
-		print(actor.name, actor.actorNr, actor:getCustomProperty("isReady"), actor:getCustomProperty("gamescore"))
-	end
-
-<<<<<<< HEAD
-	return actorArray 	
-end
-
---設定遊戲房間內自定義的變數
-function PhotonTool:setCustomProperty( playerstate,gamescore )
->>>>>>> origin/master
->>>>>>> origin/master
+function PhotonTool:setCustomProperty( playerstate,gamescore,gamestate,level)
 	if(playerstate ~= false) then
 		self.client:myActor():setCustomProperty("isReady", playerstate)
 	end
 	if(gamescore) then
 		self.client:myActor():setCustomProperty("gamescore", gamescore)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
 		
 	end
 	if(gamestate) then
 		self.client:myActor():setCustomProperty("gamestate", gamestate)
-<<<<<<< HEAD
+	end
+
+	if(level) then
+		self.client:myActor():setCustomProperty("level", level)
 	end
 end
 
 
 --取得房間資訊
-=======
-=======
->>>>>>> origin/master
-	end
-end
-
-
---取得房間資訊
-<<<<<<< HEAD
-function  PhotonTool:GetRoomInfo()
-	-- Get Room
-	local room = self.client:myRoom()
-	local creator = room:getCustomProperty("creator")
-	local gameType = room:getCustomProperty("gameType")
-
-	local roomInfo = RoomInfo.new(room.name , creator, room.maxPlayers, room.playerCount, gameType)
-
-	return roomInfo
-=======
-=======
-function PhotonTool:setCustomProperty( playerstate )
-	
-	self.client:myActor():setCustomProperty("isReady", playerstate)
-	
->>>>>>> origin/master
-end
----------------------------
--- 大廳運作相關 function --
----------------------------
-
---創建房間
-function PhotonTool:CreateRoom( roomName,playercount )
-	-- 取得創建房間設定
-	 
-	
-
-	self.basicRoomCreateOptions= {
-		maxPlayers = 2,
-
-		customGameProperties = { 
-			gameType = 1 , 
-			creator = "nil"
-		
-		}
-
-	}
-	local createOptions =self.basicRoomCreateOptions
-	createOptions.customGameProperties.creator = "Yee"
-
-	self.client:createRoom(roomName, createOptions)
-end
-
---加入房間
-function PhotonTool:JoinRoom( RoomName )
-	self.client:joinRoom(RoomName, self.basicRoomOptions, self.basicRoomCreateOptions)
-end
-
-<<<<<<< HEAD
---離開房間
-=======
-
->>>>>>> origin/master
->>>>>>> origin/master
 function  PhotonTool:GetRoomInfo()
 	-- Get Room
 	local room = self.client:myRoom()
@@ -460,7 +267,6 @@ end
 -- 大廳運作相關 function --
 ---------------------------
 
-<<<<<<< HEAD
 --創建房間
 function PhotonTool:CreateRoom( roomName,playercount )
 	-- 取得創建房間設定
@@ -478,57 +284,22 @@ function PhotonTool:CreateRoom( roomName,playercount )
 
 	}
 	local createOptions =self.basicRoomCreateOptions
-=======
-<<<<<<< HEAD
---創建房間
-=======
->>>>>>> origin/master
-function PhotonTool:CreateRoom( roomName )
-	-- 取得創建房間設定
-	local createOptions = self.basicRoomCreateOptions
->>>>>>> origin/master
 	createOptions.customGameProperties.creator = "Yee"
 
 	self.client:createRoom(roomName, createOptions)
 end
 
-<<<<<<< HEAD
 --加入房間
-=======
-<<<<<<< HEAD
---加入房間
-=======
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:JoinRoom( RoomName )
 	self.client:joinRoom(RoomName, self.basicRoomOptions, self.basicRoomCreateOptions)
 end
 
-<<<<<<< HEAD
 --離開房間
-=======
-<<<<<<< HEAD
---離開房間
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:LeaveRoom()
 	self.client:leaveRoom()
 end
 
-<<<<<<< HEAD
 --取得房間列表
-=======
-<<<<<<< HEAD
---取得房間列表
-=======
-<<<<<<< HEAD
---取得房間列表
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 function PhotonTool:GetRoomList()
 	return self.RoomList
 end

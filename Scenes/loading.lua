@@ -7,16 +7,17 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	display.setDefault( "background", 0, 0, 0 )
-<<<<<<< HEAD
-	local test = display.newText("Loading ...",display.contentCenterX,display.contentCenterY,nil,80)
-=======
-	local test = display.newText("Loading ~~",display.contentCenterX,display.contentCenterY,nil,80)
->>>>>>> origin/master
+	--display.setDefault( "background", 0, 0, 0 )
+	local bkground = display.newImage("Textures/background_shoot.png")
+	bkground.x = display.contentCenterX
+	bkground.y = display.contentCenterY
+	sceneGroup:insert(bkground)
+	local test = display.newText("Loading ...",display.contentWidth/1.2,display.contentHeight/1.1,nil,120)
+	test:setTextColor(  0, 0, 1  )
 		sceneGroup:insert( test )	
 	end
 function scene:show( event )
-	local phase = event.phase
+	local phase = event.phase 
 
 	if "did" == phase then
 		print( "1: show event, phase did" )
